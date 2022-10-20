@@ -1,0 +1,21 @@
+@import "@/sass/_variables.scss";
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    height: 100vh;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+a {
+    text-decoration: none;
+}
+
+#app {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
