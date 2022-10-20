@@ -7,9 +7,9 @@
         "preview": "vite preview --port 4173"
     },
     "dependencies": {
+        "idn-lib": "file:../idn-lib",
         "vue": "^3.2.38",
-        "vue-router": "^4.1.5",
-        "idn-lib": "../idn-lib"
+        "vue-router": "^4.1.5"
     },
     "devDependencies": {
         "@vitejs/plugin-vue": "^3.0.3",
