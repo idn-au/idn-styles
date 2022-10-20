@@ -1,10 +1,9 @@
 <script setup>
-import { HeaderComponent } from "idn-lib";
+
 </script>
 
 <template>
-  <HeaderComponent />
-  some text
+    some text
 </template>
 
 <style lang="scss" scoped>

@@ -1,15 +1,18 @@
 import "@/sass/main.scss";
 
 import HeaderComponent from "@/components/HeaderComponent.vue";
+import MainComponent from "@/components/MainComponent.vue";
 import FooterComponent from "@/components/FooterComponent.vue";
 
 const components = {
     HeaderComponent,
+    MainComponent,
     FooterComponent
 };
 
 export {
     HeaderComponent,
+    MainComponent,
     FooterComponent
 };
 
