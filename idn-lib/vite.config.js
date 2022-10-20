@@ -20,7 +20,7 @@ export default defineConfig({
             entry: resolve(__dirname, "src/plugin.js"),
             name: "IDNLib",
             // the proper extensions will be added
-            fileName: "idn-lib",
+            fileName: (format) => `idn-lib.${format}.js`,
         },
         rollupOptions: {
             // make sure to externalize deps that shouldn"t be bundled

@@ -6,10 +6,10 @@
         "dist"
     ],
     "main": "./dist/idn-lib.umd.cjs",
-    "module": "./dist/idn-lib.js",
+    "module": "./dist/idn-lib.es.js",
     "exports": {
         ".": {
-            "import": "./dist/idn-lib.js",
+            "import": "./dist/idn-lib.es.js",
             "require": "./dist/idn-lib.umd.cjs"
         },
         "./dist/": "./dist/"
