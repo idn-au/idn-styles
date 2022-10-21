@@ -19,6 +19,7 @@ jobs:
           node-version: latest
           registry-url: 'https://npm.pkg.github.com'
       - run: npm ci --legacy-peer-deps
+      - run: CI=false npm run build
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
