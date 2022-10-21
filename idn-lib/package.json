@@ -1,5 +1,5 @@
 {
-    "name": "idn-lib",
+    "name": "@idn-au/idn-lib",
     "type": "module",
     "version": "0.0.0",
     "files": [
@@ -14,11 +14,18 @@
         },
         "./dist/": "./dist/"
     },
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/idn-au/idn-styles.git",
+        "directory": "idn-lib"
+    },
     "scripts": {
         "dev": "vite",
         "build": "vite build",
-        "preview": "vite preview --port 4173",
-        "postinstall": "npm run build"
+        "preview": "vite preview --port 4173"
     },
     "dependencies": {
         "vue": "^3.2.38",
