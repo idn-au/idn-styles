@@ -5,6 +5,9 @@ on:
       - "main"
 jobs:
   publish:
+    defaults:
+      run:
+        working-directory: idn-lib
     runs-on: ubuntu-latest 
     permissions: 
       contents: read
@@ -14,8 +17,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: latest
-      - run: cd idn-lib/
-      - run: npm ci
+      - run: npm install
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
