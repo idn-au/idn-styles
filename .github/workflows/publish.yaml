@@ -11,10 +11,10 @@ jobs:
       packages: write 
     steps:
       - uses: actions/checkout@v3
-      - run: cd idn-lib
       - uses: actions/setup-node@v3
         with:
           node-version: latest
+      - run: cd idn-lib/
       - run: npm ci
       - run: npm publish
         env:
