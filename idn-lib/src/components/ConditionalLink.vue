@@ -1,6 +1,4 @@
 <script setup>
-import { RouterLink } from "vue-router";
-
 const publicBaseUrl = "https://idn-au.github.io/dev.idnau.org";
 
 const props = defineProps({
@@ -8,7 +6,7 @@ const props = defineProps({
         type: String,
         required: true
     },
-    useRouter: {
+    internal: {
         type: Boolean,
         default: false
     }
@@ -16,10 +14,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <RouterLink v-if="props.useRouter" :to="props.to">
-        <slot></slot>
-    </RouterLink>
-    <a v-else :href="publicBaseUrl + props.to">
+    <a :href="`${props.internal ? '' : publicBaseUrl}${props.to}`">
         <slot></slot>
     </a>
 </template>

@@ -3,6 +3,7 @@ import "@/sass/main.scss";
 import HeaderComponent from "@/components/HeaderComponent.vue";
 import MainComponent from "@/components/MainComponent.vue";
 import FooterComponent from "@/components/FooterComponent.vue";
+import { navLinks } from "@/utils/links";
 
 const components = {
     HeaderComponent,
@@ -13,7 +14,8 @@ const components = {
 export {
     HeaderComponent,
     MainComponent,
-    FooterComponent
+    FooterComponent,
+    navLinks
 };
 
 export default {

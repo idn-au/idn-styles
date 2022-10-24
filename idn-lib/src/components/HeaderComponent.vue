@@ -4,7 +4,7 @@ import NavBar from "@/components/NavBar.vue";
 import idnLogo from "@/assets/idn-logo-250.png";
 
 const props = defineProps({
-    useRouter: {
+    internal: {
         type: Boolean,
         default: false
     },
@@ -23,17 +23,27 @@ const props = defineProps({
         </div>
         <div id="header-content">
             <div id="header-left">
-                <ConditionalLink :useRouter="props.useRouter" id="idn-logo" to="/"><img :src="idnLogo" alt="IDN Logo"></ConditionalLink>
+                <ConditionalLink :internal="props.internal" id="idn-logo" to="/"><img :src="idnLogo" alt="IDN Logo"></ConditionalLink>
                 <div id="logo-text">
-                    <a href="https://mspgh.unimelb.edu.au/centres-institutes/centre-for-health-equity/research-group/indigenous-data-network" target="_blank">
+                    <a class="heading" href="https://mspgh.unimelb.edu.au/centres-institutes/centre-for-health-equity/research-group/indigenous-data-network" target="_blank">
                         <h1>The Indigenous Data Network</h1>
                     </a>
-                    <ConditionalLink :useRouter="props.useRouter" to="/">
-                        <h2><template v-if="props.title">{{ props.title }} | </template>IDN Catalogue Project</h2>
-                    </ConditionalLink>
+                    <div class="sub-heading">
+                        <template v-if="props.title">
+                            <a href="/">
+                                <h2>{{ props.title }}</h2>
+                            </a>
+                            <span class="separator">|</span>
+                        </template>
+                        <ConditionalLink :internal="props.internal" to="/">
+                            <h2>IDN Catalogue Project</h2>
+                        </ConditionalLink>
+                    </div>
                 </div>
             </div>
-            <NavBar :useRouter="props.useRouter" />
+            <NavBar :internal="props.internal">
+                <slot></slot>
+            </NavBar>
         </div>
     </header>
 </template>
@@ -71,6 +81,20 @@ header {
                 flex-direction: column;
                 justify-content: space-around;
 
+                .sub-heading {
+                    display: flex;
+                    flex-direction: row;
+                    gap: 12px;
+                    align-items: center;
+                    margin-bottom: 18px;
+
+                    .separator {
+                        font-size: 1.2rem;
+                        font-weight: 100;
+                        line-height: 1.1;
+                    }
+                }
+
                 a {
                     color: black;
                 }
@@ -84,7 +108,6 @@ header {
                 h2 {
                     margin: 0;
                     font-size: 20px;
-                    margin-bottom: 18px;
                 }
             }
         }
