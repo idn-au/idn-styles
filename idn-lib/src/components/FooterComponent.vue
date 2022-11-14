@@ -1,8 +1,8 @@
 <script setup>
-import aiatsisLogo from "@/assets/logo-aiatsis.svg";
-import anuLogo from "@/assets/logo-anu.jpeg";
-import ardcLogo from "@/assets/logo-ardc.svg";
-import umLogo from "@/assets/logo-um.svg";
+import aiatsisLogo from "@/assets/images/AIATSIS-WhiteCrest-landscape.png";
+import anuLogo from "@/assets/images/ANU-WhiteCrest-landscape.png";
+import ardcLogo from "@/assets/images/ARDC-WhiteCrest-stacked.png";
+import umLogo from "@/assets/images/UMelb-WhiteCrest-landscape.png";
 </script>
 
 <template>
@@ -30,7 +30,7 @@ import umLogo from "@/assets/logo-um.svg";
 </template>
 
 <style lang="scss" scoped>
-@import "@/sass/_variables.scss";
+@import "@/assets/sass/_variables.scss";
 $padding: 20px;
 
 footer {

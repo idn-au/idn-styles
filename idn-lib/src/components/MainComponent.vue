@@ -11,7 +11,7 @@
 </template>
 
 <style lang="scss" scoped>
-@import "@/sass/_variables.scss";
+@import "@/assets/sass/_variables.scss";
 $padding: 20px;
 
 main {

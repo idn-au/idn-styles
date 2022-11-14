@@ -12,7 +12,7 @@ import { navLinks } from "@/utils/links";
 </template>
 
 <style lang="scss" scoped>
-@import "@/sass/_variables.scss";
+@import "@/assets/sass/_variables.scss";
 
 nav#main-nav {
     display: flex;

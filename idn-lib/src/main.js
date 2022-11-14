@@ -3,7 +3,7 @@ import App from "@/App.vue";
 import router from "@/router";
 import plugin from "@/plugin";
 
-import "@/sass/main.scss";
+import "@/assets/sass/main.scss";
 
 const app = createApp(App);
 

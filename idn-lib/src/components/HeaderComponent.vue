@@ -1,7 +1,8 @@
 <script setup>
 import ConditionalLink from "@/components/ConditionalLink.vue";
+import BannerComponent from "@/components/BannerComponent.vue";
 import NavBar from "@/components/NavBar.vue";
-import idnLogo from "@/assets/idn-logo-250.png";
+import idnLogo from "@/assets/images/idn-logo-250.png";
 
 const props = defineProps({
     internal: {
@@ -9,14 +10,14 @@ const props = defineProps({
         default: false
     },
     title: String,
-    dev: {
-        type: Boolean,
-        default: false
-    }
+    banners: Array // [{"type": "dev", "message": "some message", ...}]
 });
 </script>
 
 <template>
+    <BannerComponent v-for="banner in props.banners" :type="banner.type">
+        {{ banner.message }}
+    </BannerComponent>
     <header>
         <div v-if="props.dev" id="dev-flag">
             <span>Under development</span>
@@ -49,7 +50,7 @@ const props = defineProps({
 </template>
 
 <style lang="scss" scoped>
-@import "@/sass/_variables.scss";
+@import "@/assets/sass/_variables.scss";
 $padding: 20px;
 
 header {
