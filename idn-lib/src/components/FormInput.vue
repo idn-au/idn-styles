@@ -1,7 +1,6 @@
 <script setup>
 import { computed, ref, useSlots } from "vue";
 import ToolTip from "@/components/ToolTip.vue";
-// import PropTooltip from "@/components/PropTooltip.vue";
 
 const inFocus = ref(false);
 const inputRef = ref(null);
@@ -20,7 +19,6 @@ const props = defineProps({
         required: true
     },
     tooltip: String,
-    // propTooltip: Object,
     options: Array,
     id: String,
     required: Boolean,
@@ -92,6 +90,7 @@ const labelIsFloating = computed(() => {
 <template>
     <div class="form-input">
         <div class="form-input-row">
+            <slot name="before"></slot>
             <div :class="`form-input-content ${(props.type === 'checkbox' || props.type === 'radio') ? 'check-radio' : 'text-like'} ${(props.type === 'select' || props.type === 'date') ? 'no-cursor' : ''} ${inFocus ? 'focus' : ''} ${isInvalid ? 'invalid' : ''} ${props.disabled === true ? 'disabled' : ''}`">
                 <div class="input-prepend" v-if="!!slots.prepend">
                     <slot name="prepend"></slot>
@@ -182,11 +181,11 @@ const labelIsFloating = computed(() => {
                 >
                     <i class="fa-regular fa-xmark"></i>
                 </button>
-                <div class="input-append"  v-if="!!slots.append">
+                <div class="input-append" v-if="!!slots.append">
                     <slot name="append"></slot>
                 </div>
             </div>
-            <!-- <PropTooltip v-bind="props.propTooltip" v-if="!!props.propTooltip" /> -->
+            <slot name="after"></slot>
             <ToolTip v-if="!!props.tooltip">
                 <i class="fa-regular fa-circle-question"></i>
                 <template #text>{{ props.tooltip }}</template>
@@ -226,6 +225,7 @@ $labelFloatColor: rgba($color: $labelColor, $alpha: 0.8);
             display: flex;
             flex-direction: row;
             width: 100%;
+            overflow: hidden;
 
             .input-prepend {
                 display: flex;

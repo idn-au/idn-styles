@@ -7,7 +7,15 @@ const text = ref("");
 
 <template>
     <div>
-        <FormInput type="text" label="Label" v-model="text" />
+        <FormInput
+            type="text"
+            label="Label"
+            v-model="text"
+            :clearButton="true"
+        >
+            <template #before>before</template>
+            <template #after>after</template>
+        </FormInput>
     </div>
     <div class="bar">
 
