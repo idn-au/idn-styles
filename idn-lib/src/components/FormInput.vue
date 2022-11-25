@@ -2,9 +2,6 @@
 import { computed, ref, useSlots } from "vue";
 import ToolTip from "@/components/ToolTip.vue";
 
-const inFocus = ref(false);
-const inputRef = ref(null);
-
 const slots = useSlots();
 
 const props = defineProps({
@@ -25,10 +22,122 @@ const props = defineProps({
     invalidMessage: Array,
     multiple: Boolean,
     clearButton: Boolean,
-    disabled: Boolean
+    disabled: Boolean,
+    // maxlength: Number
 });
 
 const emit = defineEmits(["update:modelValue", "onBlur"]);
+
+const inFocus = ref(false);
+const inputRef = ref(null);
+
+const isInvalid = computed(() => {
+    if (props.invalidMessage === undefined) { // not provided
+        return false;
+    } else {
+        if (props.invalidMessage.length > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+});
+
+const labelIsFloating = computed(() => {
+    if (props.modelValue !== "") {
+        return true;
+    } else if (props.type === "date") {
+        return true;
+    // } else if (props.type === "date-optional") {
+    //     return true;
+    } else if (props.type === "select") {
+        if (!!props.placeholder) {
+            return true;
+        } else {
+            return false;
+        }
+    } else if (inFocus.value) {
+        return true;
+    } else {
+        return false;
+    }
+});
+
+// const propYear = ref(props.modelValue.year)
+
+// const dateModelYearValue = computed({
+//     get(){
+//         let y = ""
+//         if (propYear.value.match(/[0-9]{4}/)) {
+//             console.log("year")
+//             y = props.modelValue.year;
+//             console.log(y);
+//          return y;
+//          }else {
+//             console.log("year return replaced")
+//             return propYear.value.split("").filter(x=>x.match(/[0-9]/)).join("")//replace(/\D/,"")
+//          }
+         
+//     },
+//     set(newV){
+//         console.log(newV)
+//         if (!newV.match(/[0-9]{1,4}/)) {
+//             console.log("bad year set ")
+//             newV = ""
+//         }
+//         newV = newV.split("").filter(x=>x.match(/[0-9]/)).join("")
+//         let d = {...props.modelValue,year:newV}
+//         emit("update:modelValue", d);
+//     }
+// })
+// const dateModelValue = computed({
+//     get() {
+//         if (props.type === "date-optional") {
+//             let d = {
+//                 day: "",
+//                 month: "",
+//                 year: ""
+//             };
+
+//             if (props.modelValue.day.match(/[0-9]{1,2}/)) {
+//                 console.log("day")
+//                 let dayNumber = Number(props.modelValue.day);
+//                 if (1 <= dayNumber && dayNumber <= 31) {
+//                     d.day = props.modelValue.day;
+//                 }
+//             }
+
+//             if (props.modelValue.month.match(/[0-9]{1,2}/)) {
+//                 console.log("month")
+//                 let monthNumber = Number(props.modelValue.month);
+//                 if (1 <= monthNumber && monthNumber <= 12) {
+//                     d.month = props.modelValue.month;
+//                 }
+//             }
+
+//             // if (props.modelValue.year.match(/[0-9]{4}/)) {
+//             //     console.log("year")
+//             //     d.year = props.modelValue.year;
+//             // }
+
+//             console.log(d);
+
+//             return d;
+//         } else {
+//             console.log("null")
+//             return null;
+//         }
+//     },
+//     set(newValue) {
+//         console.log(newValue)
+//         if (!newValue.year.match(/[0-9]{1,4}/)) {
+//             console.log("bad year set ")
+//             return
+//         }
+
+//         emit("update:modelValue", newValue);
+//     }
+// });
 
 function updateValue(e) {
     if (props.type === "select" && props.multiple === true) {
@@ -51,40 +160,31 @@ function updateValue(e) {
         } else {
             emit("update:modelValue", e.target.checked);
         }
+    // } else if (props.type === "date-optional") {
+        // do nothing
     } else {
         emit("update:modelValue", e.target.value);
     }
 }
 
-const isInvalid = computed(() => {
-    if (props.invalidMessage === undefined) { // not provided
-        return false;
+function clearValue() {
+    if ((props.type === "select" || props.type === "checkbox") && props.multiple === true) {
+        emit("update:modelValue", []);
+    } else if (props.type === "checkbox" && props.multiple === false) {
+        emit("update:modelValue", false);
+    // } else if (props.type === "date-optional") {
+    //     emit("update:modelValue", {day: "", month: "", year: ""});
     } else {
-        if (props.invalidMessage.length > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        emit("update:modelValue", "");
     }
-});
+}
 
-const labelIsFloating = computed(() => {
-    if (props.modelValue !== "") {
-        return true;
-    } else if (props.type === "date") {
-        return true;
-    } else if (props.type === "select") {
-        if (!!props.placeholder) {
-            return true;
-        } else {
-            return false;
-        }
-    } else if (inFocus.value) {
-        return true;
-    } else {
-        return false;
-    }
-});
+// for shifting focus on maxlength
+// function customDateChange(e, field) {
+//     if ((field === "day" || field === "month") && e.target.value.length === e.target.maxLength) {
+//         document.getElementById(`${props.id}-${field === 'day' ? 'month' : 'year'}`).focus();
+//     }
+// }
 </script>
     
 <template>
@@ -109,7 +209,7 @@ const labelIsFloating = computed(() => {
                                 <input
                                     type="checkbox"
                                     :value="option.value"
-                                    :checked="modelValue.includes(option.value)"
+                                    :checked="props.modelValue.includes(option.value)"
                                     @change="updateValue($event); $emit('onBlur')"
                                     :name="option.value"
                                     :id="option.value"
@@ -120,7 +220,7 @@ const labelIsFloating = computed(() => {
                         <div v-else class="checkbox-item">
                             <input
                                 type="checkbox"
-                                :checked="modelValue"
+                                :checked="props.modelValue"
                                 @change="updateValue($event); $emit('onBlur')"
                                 :name="props.id"
                                 :id="props.id"
@@ -134,7 +234,7 @@ const labelIsFloating = computed(() => {
                         ref="inputRef"
                         @focus="inFocus = true"
                         @blur="inFocus = false; $emit('onBlur')"
-                        :value="modelValue"
+                        :selected="props.modelValue"
                         @change="updateValue"
                         :name="props.id"
                         :id="props.id"
@@ -147,16 +247,48 @@ const labelIsFloating = computed(() => {
                     <textarea
                         v-else-if="type === 'textarea'"
                         class="input"
+                        ref="inputRef"
                         :name="props.id"
                         :id="props.id"
                         rows="3"
                         @focus="inFocus = true"
                         @blur="inFocus = false; $emit('onBlur')"
-                        :value="modelValue"
+                        :value="props.modelValue"
                         @input="updateValue"
-                        :placeholder="(props.placeholder && inFocus && modelValue === '') ? props.placeholder : undefined"
+                        :placeholder="(props.placeholder && inFocus && props.modelValue === '') ? props.placeholder : undefined"
                         :disabled="props.disabled === true"
                     ></textarea>
+                    <!-- <div v-else-if="type === 'date-optional'" class="date-optional">
+                        <FormInput
+                            type="text"
+                            label="Day"
+                            v-model="dateModelValue.day"
+                            placeholder="DD"
+                            :maxlength="2"
+                            :id="`${props.id}-day`"
+                            @input=" customDateChange($event, 'day');"
+                        />
+                        <span>/</span>
+                        <FormInput
+                            type="text"
+                            label="Month"
+                            v-model="dateModelValue.month"
+                            placeholder="MM"
+                            :maxlength="2"
+                            :id="`${props.id}-month`"
+                            @input=" customDateChange($event, 'month');"
+                        />
+                        <span>/</span>
+                        <FormInput
+                            type="text"
+                            label="Year"
+                            v-model.number="dateModelYearValue"
+                            placeholder="YYYY"
+                            :maxlength="4"
+                            :id="`${props.id}-year`"
+                            @input=" customDateChange($event, 'year');"
+                        />
+                    </div> -->
                     <input
                         v-else
                         class="input"
@@ -164,18 +296,19 @@ const labelIsFloating = computed(() => {
                         :type="props.type"
                         @focus="inFocus = true"
                         @blur="inFocus = false; $emit('onBlur')"
-                        :value="modelValue"
+                        :value="props.modelValue"
                         @input="updateValue"
                         :name="props.id"
                         :id="props.id"
-                        :placeholder="(props.placeholder && inFocus && modelValue === '') ? props.placeholder : undefined"
+                        :placeholder="(props.placeholder && inFocus && props.modelValue === '') ? props.placeholder : undefined"
                         :disabled="props.disabled === true"
+                        :maxlength="props.maxlength"
                     />
                 </div>
                 <button
                     class="input-clear-btn"
                     v-if="props.clearButton === true"
-                    @click="$emit('update:modelValue', '')"
+                    @click="clearValue"
                     title="Clear field"
                     :disabled="props.disabled === true"
                 >
@@ -448,5 +581,35 @@ select.input {
     }
 }
 
-// input[type="date"]:
+// .date-optional {
+//     display: flex;
+//     flex-direction: row;
+//     gap: 6px;
+//     align-items: center;
+//     padding: 16px 6px 6px 6px;
+//     flex-grow: 1;
+
+//     .form-input {
+//         flex: 1;
+
+//         .form-input-content {
+//             border-color: #dddddd;
+//         }
+
+//         label {
+//             font-size: 0.9em;
+//             transform: translate(0, 8px) scale(1) !important;
+
+//             &.float {
+//                 transform: translate(0, 2px) scale(.75) !important;
+//             }
+//         }
+
+//         .input {
+//             background-color: white !important;
+//             font-size: 0.75em;
+//             padding: 12px 6px 2px 6px !important;
+//         }
+//     }
+// }
 </style>
