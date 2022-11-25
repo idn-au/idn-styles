@@ -241,7 +241,7 @@ function clearValue() {
                         :disabled="props.disabled === true"
                         :multiple="props.multiple === true"
                     >
-                        <option v-if="props.placeholder" value="" selected disabled hidden>{{ props.placeholder }}</option>
+                        <option value="" :selected="props.modelValue === ''" disabled hidden>{{ props.placeholder || "" }}</option>
                         <option v-for="option in props.options" :value="option.value">{{ option.label }}</option>
                     </select>
                     <textarea

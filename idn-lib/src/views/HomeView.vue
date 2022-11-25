@@ -8,10 +8,13 @@ import FormInput from "@/components/FormInput.vue";
 //     year: "" 
 // });
 const date = ref("");
+const selected = ref("")
 </script>
 
 <template>
     <div>
+        <FormInput label="Select" type="select" v-model="selected" :options="[{'label': 'option 1', 'value': '1'}, {'label': 'option 2', 'value': '2'},]" :clearButton="true" />
+        <FormInput label="Select" placeholder="placeholder" type="select" v-model="selected" :options="[{'label': 'option 3', 'value': '3'}, {'label': 'option 4', 'value': '4'},]" />
         <!-- <FormInput
             type="date-optional"
             v-model="customDate"
