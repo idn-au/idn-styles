@@ -57,6 +57,10 @@ header {
     display: flex;
     background-color: #eeeeee;
 
+    a::after {
+        content: unset;
+    }
+
     #header-content {
         display: flex;
         flex-direction: row;

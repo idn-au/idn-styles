@@ -10,20 +10,21 @@ import umLogo from "@/assets/images/UMelb-WhiteCrest-landscape.png";
         <div id="footer-content">
             <div id="footer-logos">
                 <div>
-                    <a href="https://aiatsis.gov.au/" target="_blank"><img :src="aiatsisLogo" alt="AIATSIS Logo"></a>
-                </div>
-                <div>
-                    <a href="https://www.anu.edu.au/" target="_blank"><img :src="anuLogo" alt="ANU Logo"></a>
+                    <a href="https://www.unimelb.edu.au/" target="_blank"><img :src="umLogo" alt="Melbourne Uni Logo"></a>
                 </div>
                 <div>
                     <a href="https://ardc.edu.au/" target="_blank"><img :src="ardcLogo" alt="ARDC Logo"></a>
                 </div>
                 <div>
-                    <a href="https://www.unimelb.edu.au/" target="_blank"><img :src="umLogo" alt="Melbourne Uni Logo"></a>
+                    <a href="https://www.anu.edu.au/" target="_blank"><img :src="anuLogo" alt="ANU Logo"></a>
+                </div>
+                <div>
+                    <a href="https://aiatsis.gov.au/" target="_blank"><img :src="aiatsisLogo" alt="AIATSIS Logo"></a>
                 </div>
             </div>
             <div id="footer-bottom">
-                footer content
+                <p>The <a href="https://mspgh.unimelb.edu.au/centres-institutes/centre-for-health-equity/research-group/indigenous-data-network" target="_blank">Indigenous Data Network (IDN)</a> is within the <a href="https://www.unimelb.edu.au" target="_blank">University of Melbourne</a>. It was established in 2018 to support and coordinate the governance of Indigenous data for Aboriginal and Torres Strait Islander peoples and empower Aboriginal and Torres Strait Islander communities to decide their own local data priorities.</p>
+                <p>This website and content, &copy; Indigenous Data Network, 2022</p>
             </div>
         </div>
     </footer>
@@ -66,6 +67,10 @@ footer {
                 a {
                     display: flex;
                     flex-grow: 1;
+
+                    &::after {
+                        content: unset;
+                    }
 
                     img {
                         height: auto;

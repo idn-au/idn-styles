@@ -24,7 +24,7 @@ nav#main-nav {
         color: black;
         padding: 12px 12px 9px 12px;
         text-decoration: none;
-        font-weight: bold;
+        // font-weight: bold;
         font-size: 18px;
         border-bottom: 3px solid transparent;
         transition: border-bottom-color 0.2s ease-in-out;
@@ -33,7 +33,7 @@ nav#main-nav {
             border-bottom-color: rgba($color: $primary, $alpha: 0.5);
         }
 
-        &.router-link-exact-active, &.active {
+        &.router-link-exact-active, &.router-link-active, &.active {
             border-bottom-color: $primary;
         }
     }

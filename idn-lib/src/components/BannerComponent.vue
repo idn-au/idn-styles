@@ -48,7 +48,7 @@ const props = defineProps({
     }
 
     &.dev {
-        background-color: #ff9d26;
+        background-color: #ffa347;
         color: black;
     }
 
@@ -72,8 +72,9 @@ const props = defineProps({
     }
 
     .banner-content {
-        padding: 4px;
+        padding: 6px;
         flex-grow: 1;
+        font-size: 0.9rem;
     }
 
     button.banner-close-btn {

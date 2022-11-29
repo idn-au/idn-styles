@@ -1,3 +1,5 @@
 $primary: #e63d30;
 $maxPageWidth: 1400px;
 $borderRadius: 6px;
+$linkColor: $primary;
+$linkHover: adjust-color($color: $primary, $saturation: 10%, $lightness: -8%);
