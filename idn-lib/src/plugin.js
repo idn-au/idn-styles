@@ -5,8 +5,8 @@ import MainComponent from "@/components/MainComponent.vue";
 import FooterComponent from "@/components/FooterComponent.vue";
 import BannerComponent from "@/components/BannerComponent.vue";
 import BaseModal from "@/components/BaseModal.vue";
-import FormInput from "@/components/FormInput.vue";
-import FormField from "@/components/FormField.vue";
+import FormInput from "@/components/form/FormInput.vue";
+import FormField from "@/components/form/FormField.vue";
 import ToolTip from "@/components/ToolTip.vue";
 import { navLinks } from "@/utils/links";
 

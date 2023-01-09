@@ -18,6 +18,11 @@ const banners = [
         <RouterLink v-for="link in navLinks" :to="link.url">{{ link.label }}</RouterLink>
     </HeaderComponent>
     <MainComponent>
+        <div>
+            <RouterLink to="/">Home</RouterLink>
+             | 
+            <RouterLink to="/form">Form</RouterLink>
+        </div>
         <RouterView />
     </MainComponent>
     <FooterComponent />

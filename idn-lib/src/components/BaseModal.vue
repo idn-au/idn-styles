@@ -21,7 +21,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <div class="modal" @click.self="$emit('modalClosed')">
+    <div class="modal" @click.self="emit('modalClosed')">
         <div class="modal-content">
             <div class="modal-header">
                 <div class="modal-header-third">
@@ -32,7 +32,7 @@ onUnmounted(() => {
                 </div>
                 <div class="modal-header-third">
                     <slot name="headerRight"></slot>
-                    <span @click="$emit('modalClosed')" class="modal-close" title="Close"><i class="fa-light fa-xmark"></i></span>
+                    <span @click="emit('modalClosed')" class="modal-close" title="Close"><i class="fa-light fa-xmark"></i></span>
                 </div>
             </div>
             <div class="modal-body">
