@@ -24,7 +24,11 @@ const props = defineProps({
         </div>
         <div id="header-content">
             <div id="header-left">
-                <ConditionalLink :internal="props.internal" id="idn-logo" to="/"><img :src="idnLogo" alt="IDN Logo"></ConditionalLink>
+                <slot name="logo-link">
+                    <ConditionalLink :internal="props.internal" id="idn-logo" to="/">
+                        <img :src="idnLogo" alt="IDN Logo" />
+                    </ConditionalLink>
+                </slot>
                 <div id="logo-text">
                     <a class="heading" href="https://mspgh.unimelb.edu.au/centres-institutes/centre-for-health-equity/research-group/indigenous-data-network" target="_blank">
                         <h1>The Indigenous Data Network</h1>
@@ -36,14 +40,16 @@ const props = defineProps({
                             </a>
                             <span class="separator">|</span>
                         </template>
-                        <ConditionalLink :internal="props.internal" to="/">
-                            <h2>IDN Catalogue Project</h2>
-                        </ConditionalLink>
+                        <slot name="heading-link">
+                            <ConditionalLink :internal="props.internal" to="/">
+                                <h2>IDN Catalogue Project</h2>
+                            </ConditionalLink>
+                        </slot>
                     </div>
                 </div>
             </div>
             <NavBar :internal="props.internal">
-                <slot></slot>
+                <slot name="links"></slot>
             </NavBar>
         </div>
     </header>
@@ -77,7 +83,7 @@ header {
             flex-direction: row;
             gap: 20px;
 
-            #idn-logo > img {
+            :deep(#idn-logo) > img {
                 height: 100px;
             }
 
@@ -100,7 +106,7 @@ header {
                     }
                 }
 
-                a {
+                :deep(a) {
                     color: black;
                 }
 
@@ -110,7 +116,7 @@ header {
                     margin-top: 6px;
                 }
 
-                h2 {
+                :deep(h2) {
                     margin: 0;
                     font-size: 20px;
                 }

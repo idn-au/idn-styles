@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, useSlots, defineAsyncComponent } from "vue";
+import { computed, ref, useSlots, defineAsyncComponent, onMounted } from "vue";
 import ToolTip from "@/components/ToolTip.vue";
 
 const props = defineProps({
@@ -24,7 +24,7 @@ const props = defineProps({
     disabled: Boolean,
     id: String,
     required: Boolean,
-    validation: Array,
+    validationFns: Array,
     tooltip: String,
     minYear: Number, // date-optional
     direction: String, // multiple checkboxes
@@ -33,7 +33,7 @@ const props = defineProps({
 
 const slots = useSlots();
 
-const emit = defineEmits(["update:modelValue", "blur"]);
+const emit = defineEmits(["update:modelValue", "blur", "validate"]);
 
 const InputComponent = defineAsyncComponent(() => {
     switch (props.type) {
@@ -123,7 +123,26 @@ const calcPlaceholder = computed(() => {
 
 function validate(msgs) {
     validationMessages.value = msgs;
+    emit("validate", msgs.length === 0);
 }
+
+onMounted(() => {
+    if (props.required) {
+        switch (typeof props.modelValue) {
+            case "string":
+                emit("validate", props.modelValue !== "");
+                return;
+            case "boolean":
+                emit("validate", props.modelValue);
+                return;
+            case "object":
+                if (Array.isArray(props.modelValue)) {
+                    emit("validate", props.modelValue.length > 0);
+                }
+                return;
+        }
+    }
+})
 </script>
 
 <template>

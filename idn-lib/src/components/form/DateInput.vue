@@ -10,11 +10,15 @@ const props = defineProps({
         type: String,
         required: true
     },
+    label: {
+        type: String,
+        required: true
+    },
     placeholder: String,
     disabled: Boolean,
     id: String,
     required: Boolean,
-    validation: Array,
+    validationFns: Array,
     minYear: {
         type: Number,
         default: 1900
@@ -100,8 +104,8 @@ function validate() {
     }
     
     // run array of validation functions
-    if (props.validation) {
-        props.validation.forEach(func => {
+    if (props.validationFns) {
+        props.validationFns.forEach(func => {
             const [valid, message] = func(props.modelValue);
             if (!valid) {
                 validationMessages.push(message);

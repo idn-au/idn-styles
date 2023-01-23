@@ -1,13 +1,8 @@
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import FormField from "@/components/form/FormField.vue";
 import FormInput from "@/components/form/FormInput.vue";
 
-// const customDate = ref({
-//     day: "",
-//     month: "",
-//     year: "" 
-// });
 const date = ref("");
 const startDate = ref("");
 const endDate = ref("");
@@ -59,6 +54,12 @@ const comboOptions = [
     },
 ];
 
+const validation = ref({}); // { key: isValid, ... }
+
+const isValid = computed(() => {
+    return Object.values(validation.value).every(Boolean);
+});
+
 function validateText(s) {
     if (s !== "" && !s.startsWith("s")) {
         return [false, "Field must start with 's'."];
@@ -66,31 +67,16 @@ function validateText(s) {
         return [true, ""];
     }
 }
+
+function handleValidate(key, isValid) {
+    validation.value[key] = isValid;
+    
+}
 </script>
 
 <template>
     <div>
-        <!-- <FormInput label="Select" type="select" v-model="selected" :options="[{'label': 'option 1', 'value': '1'}, {'label': 'option 2', 'value': '2'},]" :clearButton="true" />
-        <FormInput label="Select" placeholder="placeholder" type="select" v-model="selected" :options="[{'label': 'option 3', 'value': '3'}, {'label': 'option 4', 'value': '4'},]" /> -->
         <!-- <FormInput
-            type="date-optional"
-            v-model="customDate"
-            label="Start date"
-            :clearButton="true"
-            tooltip="This is a tooltip"
-            description="This is a description"
-        >
-            <template #before>before</template>
-            <template #prepend>
-                <button>a</button>
-            </template>
-            <template #append>
-                <button>a</button>
-            </template>
-            <template #after>after</template>
-        </FormInput>
-        <br/>
-        <FormInput
             type="date"
             v-model="date"
             label="Default date"
@@ -107,18 +93,16 @@ function validateText(s) {
             </template>
             <template #after>after</template>
         </FormInput> -->
-        <!-- <div :style="{ width: '300px' }">
-            <ComboBox :options="comboOptions" :multiple="true" />
-        </div> -->
-        <!-- <FormField label="Spatial">
-            <FormInput
+
+        <FormField label="Spatial">
+            <!-- <FormInput
                 type="checkbox"
                 v-model="checked"
                 leftLabel="Left"
                 rightLabel="Right"
                 id="checkbox-field"
                 switch
-            />
+            /> -->
             <FormInput
                 type="text"
                 v-model="text"
@@ -127,25 +111,29 @@ function validateText(s) {
                 placeholder="Placeholder"
                 description="Description"
                 id="text-field"
-                :validation="[validateText]"
+                :validationFns="[validateText]"
                 required
+                @validate="handleValidate('text', $event)"
             >
-                <template #prepend>
+                <!-- <template #prepend>
                     <button>P</button>
                 </template>
                 <template #append>
                     <button>A</button>
                 </template>
-                <template #tooltip><b>HTML content</b></template>
+                <template #tooltip><b>HTML content</b></template> -->
             </FormInput>
         </FormField>
-        <FormField label="Temporal" direction="row" description="Description">
+
+        <!-- <FormField label="Temporal" direction="row" description="Description">
             <FormInput
                 type="date"
                 v-model="startDate"
                 label="Start"
                 :clearButton="true"
                 id="date-start-field"
+                required
+                @validate="handleValidate('date', $event)"
             >
             </FormInput>
             <FormInput
@@ -157,8 +145,8 @@ function validateText(s) {
             >
             </FormInput>
             <template #tooltip><b>HTML content</b></template>
-        </FormField>
-        <FormInput
+        </FormField> -->
+        <!-- <FormInput
             type="date-optional"
             v-model="dateOptional"
             label="Date optional"
@@ -168,6 +156,7 @@ function validateText(s) {
         >
             <template #tooltip><b>HTML content</b></template>
         </FormInput> -->
+
         <!-- <FormInput
             type="select"
             v-model="combo"
@@ -180,7 +169,8 @@ function validateText(s) {
             searchable
             allowAdd
         /> -->
-        <button @click="dateOptional='2022-07-14'">set date</button>
+
+        <!-- <button @click="dateOptional='2022-07-14'">set date</button>
         <FormInput
             type="date-optional"
             v-model="dateOptional"
@@ -190,8 +180,9 @@ function validateText(s) {
             :minYear="1850"
         >
             <template #tooltip><b>HTML content</b></template>
-        </FormInput>
-        <!-- <Input
+        </FormInput> -->
+
+        <!-- <FormInput
             type="select"
             v-model="combo"
             :options="comboOptions"
@@ -212,8 +203,9 @@ function validateText(s) {
             </template>
             <template #after>After</template>
             <template #tooltip><b>HTML content</b></template>
-        </Input>
-        <Input
+        </FormInput> -->
+
+        <!-- <FormInput
             type="select"
             v-model="selected"
             :options="comboOptions"
@@ -221,7 +213,8 @@ function validateText(s) {
             :clearButton="true"
             description="Description"
             id="select-field"
-            disabled
+            required
+            @validate="handleValidate('select', $event)"
         >
             <template #before>Before</template>
             <template #prepend>
@@ -232,8 +225,9 @@ function validateText(s) {
             </template>
             <template #after>After</template>
             <template #tooltip><b>HTML content</b></template>
-        </Input>
-        <Input
+        </FormInput> -->
+
+        <!-- <FormInput
             type="textarea"
             v-model="textarea"
             label="Textarea Label"
@@ -241,6 +235,8 @@ function validateText(s) {
             placeholder="Placeholder"
             description="Description"
             id="textarea-field"
+            required
+            @validate="handleValidate('textarea', $event)"
         >
             <template #before>Before</template>
             <template #prepend>
@@ -251,15 +247,18 @@ function validateText(s) {
             </template>
             <template #after>After</template>
             <template #tooltip><b>HTML content</b></template>
-        </Input>
-        <Input
-            type="date"
+        </FormInput> -->
+
+        <!-- <FormInput
+            type="date-optional"
             v-model="date"
             label="Date Label"
             :clearButton="true"
             placeholder="Placeholder"
             description="Description"
             id="date-field"
+            required
+            @validate="handleValidate('date', $event)"
         >
             <template #before>Before</template>
             <template #prepend>
@@ -270,17 +269,19 @@ function validateText(s) {
             </template>
             <template #after>After</template>
             <template #tooltip><b>HTML content</b></template>
-        </Input>
-        
-        
-        <Input
+        </FormInput> -->
+
+        <!-- <FormInput
             type="radio"
             v-model="radio"
             label="Radio Label"
             id="radio-field"
             :options="comboOptions"
             clearButton
+            required
+            @validate="handleValidate('radio', $event)"
         /> -->
+
         <!-- <FormInput
             type="checkbox"
             v-model="checkedMultiple"
@@ -291,7 +292,12 @@ function validateText(s) {
             clearButton
             switch
             direction="row"
+            required
+            @validate="handleValidate('checkbox', $event)"
         /> -->
+
+        <pre>{{ JSON.stringify(validation, undefined, 2) }}</pre>
+        <pre>valid: {{ isValid }}</pre>
     </div>
 </template>
 

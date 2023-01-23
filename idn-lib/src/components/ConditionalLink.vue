@@ -1,5 +1,5 @@
 <script setup>
-const publicBaseUrl = "https://idn-au.github.io/dev.idnau.org";
+const publicBaseUrl = "https://idn-au.github.io/dev.idnau.org/#";
 
 const props = defineProps({
     to: {

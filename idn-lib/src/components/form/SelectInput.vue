@@ -3,17 +3,25 @@ import { ref, computed, watch } from "vue";
 
 const props = defineProps({
     modelValue: {
+        type: [String, Array],
+        required: true
+    },
+    label: {
+        type: String,
+        required: true
+    },
+    options: { // [{label: "", value: ""}, ...]
+        type: Array,
         required: true
     },
     placeholder: String,
-    options: Array, // [{label: "", value: ""}, ...]
     multiple: Boolean,
     chips: Boolean,
     searchable: Boolean,
     disabled: Boolean,
     id: String,
     required: Boolean,
-    validation: Array,
+    validationFns: Array,
     allowAdd: Boolean
 });
 
@@ -28,10 +36,6 @@ const customOptions = ref([]);
 
 const optionsArray = computed(() => {
     return props.options.concat(customOptions.value);
-});
-
-const emptyValue = computed(() => {
-    return props.multiple ? [] : "";
 });
 
 const labelFloat = computed(() => {
@@ -57,21 +61,21 @@ function updateValue(e) {
 
 function clearValue() {
     searchTerm.value = "";
-    emit("update:modelValue", emptyValue.value);
+    emit("update:modelValue", props.multiple ? [] : "");
     emit("validate", []);
 }
 
 function validate() {
     let validationMessages = [];
-    if (props.required && props.modelValue === emptyValue) {
+    if (props.required && (props.multiple ? props.modelValue.length === 0 : props.modelValue === "")) {
         validationMessages.push(`${props.label} must not be empty.`);
     }
 
     // component-specific validation
     
     // run array of validation functions
-    if (props.validation) {
-        props.validation.forEach(func => {
+    if (props.validationFns) {
+        props.validationFns.forEach(func => {
             const [valid, message] = func(props.modelValue);
             if (!valid) {
                 validationMessages.push(message);

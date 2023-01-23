@@ -3,18 +3,23 @@ import CheckboxSwitch from "@/components/form/CheckboxSwitch.vue";
 
 const props = defineProps({
     modelValue: { // Boolean or ["value1", "value2"]
+        type: [Boolean, Array],
+        required: true
+    },
+    label: {
+        type: String,
         required: true
     },
     options: Array, // [{label: "", value: ""}, ...] or [{leftLabel: "", rightLabel: "", value: ""}, ...] for switch multiple
     multiple: Boolean,
     switch: Boolean,
-    label: String,
     leftLabel: String, // for switch
     rightLabel: String, // for switch
     disabled: Boolean,
     clearButton: Boolean, // multiple only - check all
     id: String,
     required: Boolean,
+    validationFns: Array,
     invalidMessages: Array,
     direction: { // for multiple
         type: String,
@@ -22,7 +27,7 @@ const props = defineProps({
     }
 });
 
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(["update:modelValue", "blur", "validate"]);
 
 function updateValue(e) {
     if (props.multiple) {
@@ -46,6 +51,27 @@ function checkAll() {
         emit("update:modelValue", []);
     }
 }
+
+function validate() {
+    let validationMessages = [];
+    if (props.required && (props.multiple ? props.modelValue.length === 0 : !props.modelValue)) {
+        validationMessages.push(`${props.label} must not be empty.`);
+    }
+
+    // component-specific validation
+    
+    // run array of validation functions
+    if (props.validationFns) {
+        props.validationFns.forEach(func => {
+            const [valid, message] = func(props.modelValue);
+            if (!valid) {
+                validationMessages.push(message);
+            }
+        });
+    }
+
+    emit("validate", validationMessages);
+}
 </script>
 
 <template>
@@ -58,6 +84,7 @@ function checkAll() {
                 :checked="props.modelValue.length === props.options.length"
                 :disabled="props.disabled"
                 @change="checkAll"
+                @blur="validate(); emit('blur')"
             />
             <input
                 v-else
@@ -67,6 +94,7 @@ function checkAll() {
                 :checked="props.modelValue.length === props.options.length"
                 :disabled="props.disabled"
                 @change="checkAll"
+                @blur="validate(); emit('blur')"
             />
             <label :for="props.id + '-clear'">Check all</label>
         </div>
@@ -80,6 +108,7 @@ function checkAll() {
                     :checked="props.modelValue.includes(option.value)"
                     :disabled="props.disabled"
                     @change="updateValue"
+                    @blur="validate(); emit('blur')"
                 />
                 <input
                     v-else
@@ -90,6 +119,7 @@ function checkAll() {
                     :checked="props.modelValue.includes(option.value)"
                     :disabled="props.disabled"
                     @change="updateValue"
+                    @blur="validate(); emit('blur')"
                 />
                 <label v-if="props.switch && option.rightLabel" :for="props.id + index">{{ option.rightLabel }}</label>
                 <label v-else :for="props.id + index">{{ option.label }}</label>
@@ -104,6 +134,7 @@ function checkAll() {
             :checked="props.modelValue"
             :disabled="props.disabled"
             @change="updateValue"
+            @blur="validate(); emit('blur')"
         />
         <input
             v-else
@@ -114,7 +145,7 @@ function checkAll() {
             :id="props.id"
             :name="props.id"
             :required="props.required"
-            :hidden="props.switch"
+            @blur="validate(); emit('blur')"
         />
         <label v-if="props.switch && props.rightLabel" :for="props.id">{{ props.rightLabel }} <span v-if="props.required === true" class="required">*</span></label>
         <label v-else :for="props.id">{{ props.label }} <span v-if="props.required === true" class="required">*</span></label>

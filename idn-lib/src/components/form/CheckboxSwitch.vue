@@ -10,7 +10,7 @@ const props = defineProps({
     id: String
 });
 
-const emit = defineEmits(["change"]);
+const emit = defineEmits(["change", "focus", "blur"]);
 
 const checkboxRef = ref(null);
 </script>
@@ -27,7 +27,13 @@ const checkboxRef = ref(null);
         hidden
         ref="checkboxRef"
     />
-    <div :class="`switch ${props.checked ? 'checked' : ''} ${props.disabled ? 'disabled' : ''}`" @click="!props.disabled ? checkboxRef.click() : null">
+    <div
+        :class="`switch ${props.checked ? 'checked' : ''} ${props.disabled ? 'disabled' : ''}`"
+        @click="!props.disabled ? checkboxRef.click() : null"
+        :tabindex="!props.disabled ? '0' : null"
+        @focus="emit('focus')"
+        @blur="emit('blur')"
+    >
         <div class="switch-circle"></div>
     </div>
 </template>

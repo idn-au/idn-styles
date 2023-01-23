@@ -18,7 +18,7 @@ const props = defineProps({
     disabled: Boolean,
     id: String,
     required: Boolean,
-    validation: Array
+    validationFns: Array
 });
 
 const emit = defineEmits(["update:modelValue", "blur", "focus", "validate", "float"]);
@@ -60,8 +60,8 @@ function validate() {
     // component-specific validation (e.g. email, url)
     
     // run array of validation functions
-    if (props.validation) {
-        props.validation.forEach(func => {
+    if (props.validationFns) {
+        props.validationFns.forEach(func => {
             const [valid, message] = func(props.modelValue);
             if (!valid) {
                 validationMessages.push(message);
