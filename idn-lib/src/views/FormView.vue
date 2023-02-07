@@ -7,7 +7,7 @@ const date = ref("");
 const startDate = ref("");
 const endDate = ref("");
 const textarea = ref("");
-const selected = ref("")
+const selected = ref("a")
 const combo = ref([]);
 const text = ref("");
 const checked = ref(false);
@@ -157,18 +157,17 @@ function handleValidate(key, isValid) {
             <template #tooltip><b>HTML content</b></template>
         </FormInput> -->
 
-        <!-- <FormInput
+        <FormInput
             type="select"
-            v-model="combo"
+            v-model="selected"
             :options="comboOptions"
             label="Combo Label"
             :clearButton="true"
             description="Description"
             id="combo-field"
-            multiple
             searchable
             allowAdd
-        /> -->
+        />
 
         <!-- <button @click="dateOptional='2022-07-14'">set date</button>
         <FormInput

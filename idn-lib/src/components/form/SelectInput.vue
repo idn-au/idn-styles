@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, onMounted } from "vue";
 
 const props = defineProps({
     modelValue: {
@@ -53,6 +53,14 @@ emit("float", labelFloat.value);
 
 watch(labelFloat, (newValue) => {
     emit("float", newValue);
+});
+
+watch(() => props.modelValue, (newValue, oldValue) => {
+    if (newValue !== "" && newValue !== oldValue) {
+        if (!props.options.map(option => option.value).includes(newValue) && props.allowAdd) {
+            addOption(newValue);
+        }
+    }
 });
 
 function updateValue(e) {
@@ -130,10 +138,10 @@ function clickOption(option) {
     }
 }
 
-function addOption() {
+function addOption(val = searchTerm.value) {
     let option = {
-        value: searchTerm.value,
-        label: searchTerm.value
+        value: val,
+        label: val
     };
     customOptions.value.push(option);
     clickOption(option);
@@ -173,6 +181,12 @@ function removeChip(option) {
     selected.splice(index, 1);
     updateValue(selected);
 }
+
+onMounted(() => {
+    if (!props.options.map(option => option.value).includes(props.modelValue) && props.allowAdd) {
+        addOption(props.modelValue);
+    }
+});
 
 defineExpose({ clearValue, focus });
 </script>

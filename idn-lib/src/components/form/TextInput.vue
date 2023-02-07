@@ -51,7 +51,7 @@ function clearValue() {
     emit("validate", []);
 }
 
-function validate() {
+async function validate() {
     let validationMessages = [];
     if (props.required && props.modelValue === "") {
         validationMessages.push(`${props.label} must not be empty.`);
@@ -61,12 +61,19 @@ function validate() {
     
     // run array of validation functions
     if (props.validationFns) {
-        props.validationFns.forEach(func => {
-            const [valid, message] = func(props.modelValue);
-            if (!valid) {
-                validationMessages.push(message);
+        for (const func of props.validationFns) {
+            if (func.constructor.name === "AsyncFunction") {
+                const [valid, message] = await func(props.modelValue);
+                if (!valid) {
+                    validationMessages.push(message);
+                }
+            } else {
+                const [valid, message] = func(props.modelValue);
+                    if (!valid) {
+                    validationMessages.push(message);
+                }
             }
-        });
+        }
     }
 
     emit("validate", validationMessages);
