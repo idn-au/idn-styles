@@ -55,13 +55,13 @@ watch(labelFloat, (newValue) => {
     emit("float", newValue);
 });
 
-watch(() => props.modelValue, (newValue, oldValue) => {
-    if (newValue !== "" && newValue !== oldValue) {
-        if (!props.options.map(option => option.value).includes(newValue) && props.allowAdd) {
-            addOption(newValue);
-        }
-    }
-});
+// watch(() => props.modelValue, (newValue, oldValue) => {
+//     if (newValue.length > 0 && newValue !== oldValue) {
+//         if (!props.options.map(option => option.value).includes(newValue) && props.allowAdd) {
+//             addOption(newValue);
+//         }
+//     }
+// }, { deep: true });
 
 function updateValue(e) {
     emit("update:modelValue", e);
@@ -183,9 +183,9 @@ function removeChip(option) {
 }
 
 onMounted(() => {
-    if (!props.options.map(option => option.value).includes(props.modelValue) && props.allowAdd) {
-        addOption(props.modelValue);
-    }
+    // if (!props.options.map(option => option.value).includes(props.modelValue) && props.allowAdd) {
+    //     addOption(props.modelValue);
+    // }
 });
 
 defineExpose({ clearValue, focus });
@@ -257,8 +257,8 @@ defineExpose({ clearValue, focus });
                     <div class="no-results">No results found</div>
                     <div
                         v-if="props.allowAdd"
-                        @click="addOption"
-                        @keypress.enter="addOption"
+                        @click="addOption()"
+                        @keypress.enter="addOption()"
                         class="option active"
                         tabindex="0"
                         @blur="blur"

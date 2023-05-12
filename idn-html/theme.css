@@ -1,0 +1,164 @@
+/* stylesheet for IDN Prez UI theme */
+:root {
+    --primary: #ee736a;
+    --secondary: #515151;
+    --navColor: var(--primary);
+    --headerBg: #eeeeee;
+    --headerColor: black;
+    --footerBg: #eeeeee;
+    --footerColor: black;
+    --navBg: #e2e2e2;
+    --subNavBg: #cfcfcf;
+    --tableBg: #eeeeee;
+    --cardBg: #eeeeee;
+    --primaryBtnHover: #e16860;
+    --secondaryBtnHover: #434343;
+
+    --headingFont: Helvetica, Arial, sans-serif;
+    --bodyFont: Helvetica, Arial, sans-serif;
+}
+
+body {
+    font-weight: lighter;
+}
+
+p, li {
+    line-height: 1.2;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 400;
+}
+
+header#header {
+    display: flex;
+}
+
+header#header #header-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    width: 100%;
+    margin: 0 auto;
+    max-width: 1400px;
+    flex-wrap: wrap;
+}
+
+#header-left {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+#idn-logo > img {
+    height: 100px;
+}
+
+#logo-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.sub-heading {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.separator {
+    font-size: 1.2rem;
+    font-weight: 100;
+    line-height: 1.1;
+}
+
+header#header h1 {
+    margin: 0;
+    font-size: 26px;
+    margin-top: 6px;
+}
+
+header#header h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+header#header a {
+    color: black;
+}
+
+header#header nav#main-nav {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+}
+
+header#header nav#main-nav > a {
+    color: black;
+    padding: 12px 12px 9px 12px;
+    text-decoration: none;
+    font-size: 18px;
+    border-bottom: 3px solid transparent;
+    transition: border-bottom-color 0.2s ease-in-out;
+}
+
+header#header nav#main-nav > a:hover {
+    border-bottom-color: rgba(238, 115, 106, 0.5);
+}
+
+footer#footer {
+    display: flex;
+}
+
+footer#footer #footer-content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+footer#footer #footer-logos {
+    gap: 32px;
+    padding: 32px 60px;
+    height: 11vw;
+    max-height: 180px;
+    display: grid;
+    grid-template-rows: minmax(0, 1fr);
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+}
+
+footer#footer #footer-bottom {
+    padding: 32px;
+    background-color: #eeeeee;
+}
+
+#footer-logos div {
+    max-height: 100%;
+    display: flex;
+    background-color: white;
+    border-radius: 6px;
+    padding: 12px;
+}
+
+#footer-logos div a {
+    display: flex;
+    flex-grow: 1;
+}
+
+#footer-logos div a img {
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    margin: auto;
+}
+
+#nav-header {
+    visibility: hidden !important;
+}

@@ -1,0 +1,31 @@
+<div id="header-content">
+    <div id="header-left">
+        <slot name="logo-link">
+            <a target="_blank" id="idn-logo" href="https://idn-au.github.io/dev.idnau.org/#/">
+                <img src="theme/idn-logo-250.png" alt="IDN Logo" />
+            </a>
+        </slot>
+        <div id="logo-text">
+            <a class="heading" href="https://mspgh.unimelb.edu.au/centres-institutes/centre-for-health-equity/research-group/indigenous-data-network" target="_blank">
+                <h1>The Indigenous Data Network</h1>
+            </a>
+            <div class="sub-heading">
+                <a href="/">
+                    <h2>Prez</h2>
+                </a>
+                <span class="separator">|</span>
+                <slot name="heading-link">
+                    <a target="_blank" href="https://idn-au.github.io/dev.idnau.org/#/">
+                        <h2>IDN Catalogue Project</h2>
+                    </a>
+                </slot>
+            </div>
+        </div>
+    </div>
+    <nav id="main-nav">
+        <a href="https://idn-au.github.io/dev.idnau.org/#/" target="_blank">Home</a>
+        <a href="https://idn-au.github.io/dev.idnau.org/#/about" target="_blank">About Us</a>
+        <a href="https://idn-au.github.io/dev.idnau.org/#/resources" target="_blank">Project Resources</a>
+        <a href="https://idn-au.github.io/dev.idnau.org/#/contact" target="_blank">Contact Us</a>
+    </nav>
+</div>

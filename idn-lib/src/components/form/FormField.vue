@@ -74,7 +74,7 @@ const slots = useSlots();
             &.direction-row {
                 flex-direction: row;
 
-                & > :deep(.form-input) {
+                & > :deep(.form-field), & > :deep(.form-input) {
                     flex: 1;
                 }
             }
