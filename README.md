@@ -6,3 +6,16 @@ The `idn-lib` directory is a Vue component library containing reusable component
 ```
 npm install 'https://gitpkg.now.sh/idn-au/idn-styles/idn-lib?main'
 ```
+
+
+## Contact
+
+**Jamie Feiss**  
+*Data Infrastructure Developer*  
+Indigenous Data Network  
+University of Melbourne  
+<jamie.feiss@unimelb.edu.au>
+
+_Owner Organisation_  
+*Indigenous Data Network*  
+<https://idnau.org>
