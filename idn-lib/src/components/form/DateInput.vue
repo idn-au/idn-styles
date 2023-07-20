@@ -1,36 +1,27 @@
-<script setup>
-import { ref, watch } from "vue";
+<script lang="ts" setup>
+import { ref, computed, watch } from "vue";
+import { DateInputProps } from "../../types";
 
-const props = defineProps({
-    type: {
-        type: String,
-        required: true
-    },
-    modelValue: {
-        type: String,
-        required: true
-    },
-    label: {
-        type: String,
-        required: true
-    },
-    placeholder: String,
-    disabled: Boolean,
-    id: String,
-    required: Boolean,
-    validationFns: Array,
-    minYear: {
-        type: Number,
-        default: 1900
-    }
-});
+const DEFAULT_MIN_YEAR = 1900;
 
-const emit = defineEmits(["update:modelValue", "blur", "focus", "validate", "float"]);
+type dateObj = {
+    day: string;
+    month: string;
+    year: string;
+};
+
+const props = defineProps<DateInputProps>();
+
+const emit = defineEmits(["update:modelValue", "blur", "focus", "validate"]);
 
 const inFocus = ref(false);
-const componentRef = ref(null);
+const componentRef = ref<HTMLElement | null>(null);
 
 const optionalDate = ref(stringToDateObj(props.modelValue));
+
+const minimumYear = computed(() => {
+    return props.minYear || DEFAULT_MIN_YEAR;
+})
 
 watch(() => props.modelValue, (newValue) => {
     optionalDate.value = stringToDateObj(newValue);
@@ -42,7 +33,7 @@ watch(optionalDate, (newValue) => {
     
 }, { deep: true });
 
-function dateObjToString(dateObj) {
+function dateObjToString(dateObj: dateObj) {
     let optionalValue = "";
     if (dateObj.year) {
         optionalValue += dateObj.year;
@@ -58,7 +49,7 @@ function dateObjToString(dateObj) {
     return optionalValue;
 }
 
-function stringToDateObj(s) {
+function stringToDateObj(s: string): dateObj {
     return {
         day: s.split("-")[2] || "",
         month: s.split("-")[1] || "",
@@ -66,8 +57,8 @@ function stringToDateObj(s) {
     };
 }
 
-function updateValue(e) {
-    emit("update:modelValue", e.target.value); // for normal date type
+function updateValue(e: Event) {
+    emit("update:modelValue", (e.target as HTMLInputElement).value); // for normal date type
 }
 
 function clearValue() {
@@ -82,7 +73,7 @@ function clearValue() {
     emit("validate", []);
 }
 
-function validate() {
+async function validate() {
     let validationMessages = [];
     if (props.required && props.modelValue === "") {
         validationMessages.push(`${props.label} must not be empty.`);
@@ -105,27 +96,31 @@ function validate() {
     
     // run array of validation functions
     if (props.validationFns) {
-        props.validationFns.forEach(func => {
-            const [valid, message] = func(props.modelValue);
-            if (!valid) {
-                validationMessages.push(message);
+        for (const func of props.validationFns) {
+            // validation functions are now always async
+            const result = await func(props.modelValue);
+            if (!result.valid) {
+                validationMessages.push(result.invalidMessage);
             }
-        });
+        }
     }
 
     emit("validate", validationMessages);
 }
 
-function focus(e) {
-    inFocus.value = true;
-    if (!e) { // clicking label (done with JS)
-        componentRef.value.focus();
+function focus(e: Event) {
+    if (componentRef.value) {
+        inFocus.value = true;
+        if (!e) { // clicking label (done with JS)
+            componentRef.value.focus();
+        }
+        emit("focus");
     }
-    emit("focus");
+    
 }
 
-function blur(e) {
-    if (!e.currentTarget.parentElement.contains(e.relatedTarget)) {
+function blur(e: FocusEvent) {
+    if (!(e.currentTarget as Node)!.parentElement!.contains(e.relatedTarget as Node)) {
         inFocus.value = false;
         validate();
         emit("blur");
@@ -137,19 +132,56 @@ defineExpose({ clearValue, focus });
 
 <template>
     <div v-if="props.type === 'date-optional'">
-        <select :name="props.id + '-day'" :id="props.id + '-day'" class="optional-select" v-model="optionalDate.day" :disabled="props.disabled" ref="componentRef" @focus="focus" @blur="blur">
+        <select
+            :name="props.id + '-day'"
+            :id="props.id + '-day'"
+            class="optional-select"
+            v-model="optionalDate.day"
+            :disabled="props.disabled"
+            ref="componentRef"
+            @focus="focus"
+            @blur="blur"
+        >
             <option value="" hidden>dd</option>
-            <option v-for="d in [...Array(31).keys()].map(d => `${d + 1 < 10 ? '0' : ''}${d + 1}`)" :value="d" :checked="optionalDate.day === d">{{ d }}</option>
+            <option
+                v-for="d in [...Array(31).keys()].map(d => `${d + 1 < 10 ? '0' : ''}${d + 1}`)"
+                :value="d"
+                :checked="optionalDate.day === d"
+            >{{ d }}</option>
         </select>
         <span class="date-separator">/</span>
-        <select :name="props.id + '-month'" :id="props.id + '-month'" class="optional-select" v-model="optionalDate.month" :disabled="props.disabled" @focus="focus" @blur="blur">
+        <select
+            :name="props.id + '-month'"
+            :id="props.id + '-month'"
+            class="optional-select"
+            v-model="optionalDate.month"
+            :disabled="props.disabled"
+            @focus="focus"
+            @blur="blur"
+        >
             <option value="" hidden>mm</option>
-            <option v-for="m in [...Array(12).keys()].map(m => `${m + 1 < 10 ? '0' : ''}${m + 1}`)" :value="m" :checked="optionalDate.month === m">{{ m }}</option>
+            <option
+                v-for="m in [...Array(12).keys()].map(m => `${m + 1 < 10 ? '0' : ''}${m + 1}`)"
+                :value="m"
+                :checked="optionalDate.month === m"
+            >{{ m }}</option>
         </select>
         <span class="date-separator">/</span>
-        <select :name="props.id + '-year'" :id="props.id + '-year'" class="optional-select" v-model="optionalDate.year" :disabled="props.disabled" @focus="focus" @blur="blur">
+        <select
+            :name="props.id + '-year'"
+            :id="props.id + '-year'"
+            class="optional-select"
+            v-model="optionalDate.year"
+            :disabled="props.disabled"
+            @focus="focus"
+            @blur="blur"
+        >
             <option value="" hidden>yyyy</option>
-            <option v-for="y in [...Array(new Date().getFullYear() - props.minYear + 1).keys()].map(y => y + props.minYear).sort((a, b) => b - a)" :value="y" :checked="optionalDate.year === y">{{ y }}</option>
+            <option
+                v-for="y in [...Array(new Date().getFullYear() - minimumYear + 1).keys()].map(y => y + minimumYear).sort((a, b) => b - a)"
+                :value="y"
+                :checked="optionalDate.year === y.toString()"
+            >{{ y }}</option>
         </select>
     </div>
     <input

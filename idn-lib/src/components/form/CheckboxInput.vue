@@ -1,60 +1,40 @@
-<script setup>
-import CheckboxSwitch from "@/components/form/CheckboxSwitch.vue";
+<script lang="ts" setup>
+import { CheckBoxInputProps } from "../../types";
+import CheckboxSwitch from "./CheckboxSwitch.vue";
 
-const props = defineProps({
-    modelValue: { // Boolean or ["value1", "value2"]
-        type: [Boolean, Array],
-        required: true
-    },
-    label: {
-        type: String,
-        required: true
-    },
-    options: Array, // [{label: "", value: ""}, ...] or [{leftLabel: "", rightLabel: "", value: ""}, ...] for switch multiple
-    multiple: Boolean,
-    switch: Boolean,
-    leftLabel: String, // for switch
-    rightLabel: String, // for switch
-    disabled: Boolean,
-    clearButton: Boolean, // multiple only - check all
-    id: String,
-    required: Boolean,
-    validationFns: Array,
-    invalidMessages: Array,
-    direction: { // for multiple
-        type: String,
-        default: "column"
-    }
-});
+const props = defineProps<CheckBoxInputProps>();
 
 const emit = defineEmits(["update:modelValue", "blur", "validate"]);
 
-function updateValue(e) {
-    if (props.multiple) {
+function updateValue(e: Event) {
+    const target = e.target as HTMLInputElement;
+    if (props.multiple && Array.isArray(props.modelValue)) {
         let selected = [...props.modelValue];
-        if (selected.includes(e.target.value)) {
-            const index = selected.indexOf(e.target.value);
+        if (selected.includes(target.value)) {
+            const index = selected.indexOf(target.value);
             selected.splice(index, 1);
         } else {
-            selected.push(e.target.value);
+            selected.push(target.value);
         }
         emit("update:modelValue", selected);
     } else {
-        emit("update:modelValue", e.target.checked);
+        emit("update:modelValue", target.checked);
     }
 }
 
 function checkAll() {
-    if (props.modelValue.length < props.options.length) {
-        emit("update:modelValue", props.options.map(option => option.value));
-    } else {
-        emit("update:modelValue", []);
+    if (props.multiple && Array.isArray(props.modelValue) && props.options) {
+        if (props.modelValue.length < props.options.length) {
+            emit("update:modelValue", props.options.map(option => option.value));
+        } else {
+            emit("update:modelValue", []);
+        }
     }
 }
 
-function validate() {
+async function validate() {
     let validationMessages = [];
-    if (props.required && (props.multiple ? props.modelValue.length === 0 : !props.modelValue)) {
+    if (props.required && (props.multiple && Array.isArray(props.modelValue) ? props.modelValue.length === 0 : !props.modelValue)) {
         validationMessages.push(`${props.label} must not be empty.`);
     }
 
@@ -62,12 +42,13 @@ function validate() {
     
     // run array of validation functions
     if (props.validationFns) {
-        props.validationFns.forEach(func => {
-            const [valid, message] = func(props.modelValue);
-            if (!valid) {
-                validationMessages.push(message);
+        for (const func of props.validationFns) {
+            // validation functions are now always async
+            const result = await func(props.modelValue);
+            if (!result.valid) {
+                validationMessages.push(result.invalidMessage);
             }
-        });
+        }
     }
 
     emit("validate", validationMessages);
@@ -75,7 +56,7 @@ function validate() {
 </script>
 
 <template>
-    <div v-if="props.multiple" class="check-multiple">
+    <div v-if="props.multiple && Array.isArray(props.modelValue) && props.options" class="check-multiple">
         <label>{{ props.label }} <span v-if="props.required === true" class="required">*</span></label>
         <div v-if="props.clearButton" class="check-all check-row">
             <CheckboxSwitch
@@ -131,7 +112,7 @@ function validate() {
         <CheckboxSwitch
             v-if="props.switch"
             :id="props.id"
-            :checked="props.modelValue"
+            :checked="(props.modelValue as boolean)"
             :disabled="props.disabled"
             @change="updateValue"
             @blur="validate(); emit('blur')"

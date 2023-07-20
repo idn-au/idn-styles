@@ -1,8 +1,8 @@
-<script setup>
-import aiatsisLogo from "@/assets/images/AIATSIS-WhiteCrest-landscape.png";
-import anuLogo from "@/assets/images/ANU-WhiteCrest-landscape.png";
-import ardcLogo from "@/assets/images/ARDC-WhiteCrest-stacked.png";
-import umLogo from "@/assets/images/UMelb-WhiteCrest-landscape.png";
+<script lang="ts" setup>
+import aiatsisLogo from "../../../static-assets/images/AIATSIS-WhiteCrest-landscape.png";
+import anuLogo from "../../../static-assets/images/ANU-WhiteCrest-landscape.png";
+import ardcLogo from "../../../static-assets/images/ARDC-WhiteCrest-stacked.png";
+import umLogo from "../../../static-assets/images/UMelb-WhiteCrest-landscape.png";
 </script>
 
 <template>

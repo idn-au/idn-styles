@@ -1,12 +1,30 @@
-<script setup>
-import ConditionalLink from "@/components/ConditionalLink.vue";
-import { navLinks } from "@/utils/links";
+<script lang="ts" setup>
+import InternalLink from "./InternalLink.vue";
+
+const navLinks = [
+    {
+        "label": "Home",
+        "url": "/"
+    },
+    {
+        "label": "About Us",
+        "url": "/about"
+    },
+    {
+        "label": "Project Resources",
+        "url": "/resources"
+    },
+    {
+        "label": "Contact Us",
+        "url": "/contact"
+    }
+];
 </script>
 
 <template>
     <nav id="main-nav">
         <slot>
-            <ConditionalLink v-for="link in navLinks" :to="link.url">{{ link.label }}</ConditionalLink>
+            <InternalLink v-for="link in navLinks" :to="link.url">{{ link.label }}</InternalLink>
         </slot>
     </nav>
 </template>

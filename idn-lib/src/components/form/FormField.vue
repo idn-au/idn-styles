@@ -1,20 +1,19 @@
-<script setup>
+<script lang="ts" setup>
 import { useSlots } from "vue";
-import ToolTip from "@/components/ToolTip.vue";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { faQuestionCircle } from "@fortawesome/free-regular-svg-icons";
+import ToolTip from "../ToolTip.vue";
 
-const props = defineProps({
-    label: String,
-    span: {
-        type: Number,
-        default: 1
-    },
-    direction: {
-        type: String,
-        default: "column"
-    },
-    required: Boolean,
-    tooltip: String,
-    description: String
+const props = withDefaults(defineProps<{
+    label?: string;
+    span?: number;
+    direction?: "row" | "column";
+    required?: boolean;
+    tooltip?: string;
+    description?: string;
+}>(), {
+    span: 1,
+    direction: "column"
 });
 
 const slots = useSlots();
@@ -28,7 +27,7 @@ const slots = useSlots();
                 <slot></slot>
             </div>
             <ToolTip v-if="!!props.tooltip || !!slots.tooltip">
-                <i class="fa-regular fa-circle-question"></i>
+                <font-awesome-icon :icon="faQuestionCircle" />
                 <template #text>
                     <slot name="tooltip">{{ props.tooltip }}</slot>
                 </template>

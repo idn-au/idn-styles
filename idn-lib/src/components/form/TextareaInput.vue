@@ -1,23 +1,13 @@
-<script setup>
+<script lang="ts" setup>
 import { ref, computed, watch } from "vue";
+import { TextareaInputProps } from "../../types";
 
-const props = defineProps({
-    modelValue: {
-        type: String,
-        required: true
-    },
-    label: String,
-    placeholder: String,
-    disabled: Boolean,
-    id: String,
-    required: Boolean,
-    validationFns: Array
-});
+const props = defineProps<TextareaInputProps>();
 
 const emit = defineEmits(["update:modelValue", "blur", "focus", "validate", "float"]);
 
 const inFocus = ref(false);
-const componentRef = ref(null);
+const componentRef = ref<HTMLElement | null>(null);
 
 const labelFloat = computed(() => {
     if (inFocus.value) {
@@ -35,8 +25,8 @@ watch(labelFloat, (newValue) => {
     emit("float", newValue);
 });
 
-function updateValue(e) {
-    emit("update:modelValue", e.target.value);
+function updateValue(e: Event) {
+    emit("update:modelValue", (e.target as HTMLInputElement).value);
 }
 
 function clearValue() {
@@ -44,7 +34,7 @@ function clearValue() {
     emit("validate", []);
 }
 
-function validate() {
+async function validate() {
     let validationMessages = [];
     if (props.required && props.modelValue === "") {
         validationMessages.push(`${props.label} must not be empty.`);
@@ -54,21 +44,24 @@ function validate() {
     
     // run array of validation functions
     if (props.validationFns) {
-        props.validationFns.forEach(func => {
-            const [valid, message] = func(props.modelValue);
-            if (!valid) {
-                validationMessages.push(message);
+        for (const func of props.validationFns) {
+            // validation functions are now always async
+            const result = await func(props.modelValue);
+            if (!result.valid) {
+                validationMessages.push(result.invalidMessage);
             }
-        });
+        }
     }
 
     emit("validate", validationMessages);
 }
 
 function focus() {
-    inFocus.value = true;
-    componentRef.value.focus();
-    emit("focus");
+    if (componentRef.value) {
+        inFocus.value = true;
+        componentRef.value.focus();
+        emit("focus");
+    }
 }
 
 defineExpose({ clearValue, focus });
@@ -86,6 +79,7 @@ defineExpose({ clearValue, focus });
         @blur="inFocus = false; validate(); emit('blur')"
         @focus="inFocus = true; emit('focus')"
         ref="componentRef"
+        :style="{ resize: props.resize || 'both' }"
     ></textarea>
 </template>
 

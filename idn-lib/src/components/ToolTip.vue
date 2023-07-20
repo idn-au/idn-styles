@@ -1,4 +1,4 @@
-<script setup>
+<script lang="ts" setup>
 
 </script>
 
@@ -12,8 +12,6 @@
 </template>
 
 <style lang="scss" scoped>
-@import "@/assets/sass/_mixins.scss";
-
 .tooltip {
     position: relative;
     display: inline-block;
@@ -40,7 +38,7 @@
         left: 50%;
         transform: translateX(-50%);
         opacity: 0;
-        @include transition(opacity);
+        transition: opacity 0.2s ease-in-out;
         display: flex;
         flex-direction: column;
         gap: 12px;

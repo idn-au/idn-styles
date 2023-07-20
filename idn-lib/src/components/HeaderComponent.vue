@@ -1,16 +1,18 @@
-<script setup>
-import ConditionalLink from "@/components/ConditionalLink.vue";
-import BannerComponent from "@/components/BannerComponent.vue";
-import NavBar from "@/components/NavBar.vue";
-import idnLogo from "@/assets/images/idn-logo-250.png";
+<script lang="ts" setup>
+import BannerComponent from "./BannerComponent.vue";
+import NavBar from "./NavBar.vue";
+import InternalLink from "./InternalLink.vue";
+import idnLogo from "../../../static-assets/images/idn-logo-250.png";
 
-const props = defineProps({
-    internal: {
-        type: Boolean,
-        default: false
-    },
-    title: String,
-    banners: Array // [{"type": "dev", "message": "some message", ...}]
+const props = withDefaults(defineProps<{
+    internal?: boolean;
+    title: string;
+    banners?: {
+        type: "success" | "info" | "dev" | "warning" | "danger";
+        message: string;
+    }[];
+}>(), {
+    internal: false
 });
 </script>
 
@@ -19,15 +21,10 @@ const props = defineProps({
         {{ banner.message }}
     </BannerComponent>
     <header>
-        <div v-if="props.dev" id="dev-flag">
-            <span>Under development</span>
-        </div>
         <div id="header-content">
             <div id="header-left">
                 <slot name="logo-link">
-                    <ConditionalLink :internal="props.internal" id="idn-logo" to="/">
-                        <img :src="idnLogo" alt="IDN Logo" />
-                    </ConditionalLink>
+                    <InternalLink to="/" id="idn-logo"><img :src="idnLogo" alt="IDN Logo" /></InternalLink>
                 </slot>
                 <div id="logo-text">
                     <a class="heading" href="https://mspgh.unimelb.edu.au/centres-institutes/centre-for-health-equity/research-group/indigenous-data-network" target="_blank">
@@ -41,9 +38,9 @@ const props = defineProps({
                             <span class="separator">|</span>
                         </template>
                         <slot name="heading-link">
-                            <ConditionalLink :internal="props.internal" to="/">
+                            <InternalLink :internal="props.internal" to="/">
                                 <h2>IDN Catalogue Project</h2>
-                            </ConditionalLink>
+                            </InternalLink>
                         </slot>
                     </div>
                 </div>

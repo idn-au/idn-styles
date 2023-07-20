@@ -1,11 +1,13 @@
-<script setup>
+<script lang="ts" setup>
 import { onMounted, onUnmounted, useSlots } from "vue";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 const emit = defineEmits(["modalClosed"]);
 
 const slots = useSlots();
 
-const onEscape = (e) => {
+const onEscape = (e: KeyboardEvent) => {
     if (e.key === "Escape") {
         emit("modalClosed");
     }
@@ -32,7 +34,7 @@ onUnmounted(() => {
                 </div>
                 <div class="modal-header-third">
                     <slot name="headerRight"></slot>
-                    <span @click="emit('modalClosed')" class="modal-close" title="Close"><i class="fa-light fa-xmark"></i></span>
+                    <span @click="emit('modalClosed')" class="modal-close" title="Close"><FontAwesomeIcon :icon="faXmark" /></span>
                 </div>
             </div>
             <div class="modal-body">
@@ -49,22 +51,19 @@ onUnmounted(() => {
 @import "@/assets/sass/_variables.scss";
 
 .modal {
-    // display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 9999; /* Sit on top */
+    position: fixed;
+    z-index: 9999;
     left: 0;
     top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: hidden; /* Enable scroll if needed */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: rgba(0,0,0,0.4);
 
     .modal-content {
         background-color: white;
-        margin: 15% auto; /* 15% from the top and centered */
-        // padding: 20px;
-        // border: 1px solid #888;
-        width: 60%; /* Could be more or less, depending on screen size */
+        margin: 10% auto;
+        width: 60%;
         display: flex;
         flex-direction: column;
         border-radius: $borderRadius;
@@ -73,7 +72,6 @@ onUnmounted(() => {
         .modal-header {
             display: flex;
             flex-direction: row;
-            // justify-content: space-between;
             align-items: center;
             padding: 8px;
             gap: 8px;
@@ -121,7 +119,6 @@ onUnmounted(() => {
             justify-content: space-between;
             align-items: center;
             padding: 8px;
-            // flex-flow: row-reverse;
         }
     }
 }
