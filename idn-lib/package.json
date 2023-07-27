@@ -1,5 +1,5 @@
 {
-    "name": "idn-lib",
+    "name": "@idn-au/idn-lib",
     "version": "0.1.0",
     "type": "module",
     "files": [
@@ -16,6 +16,14 @@
         "./style.css": "./dist/style.css"
     },
     "types": "./dist/index.d.ts",
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/idn-au/idn-styles.git",
+        "directory": "idn-lib"
+    },
     "scripts": {
         "dev": "vite",
         "build": "vite build && vue-tsc --emitDeclarationOnly",

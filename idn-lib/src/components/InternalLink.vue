@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { IDN_WEBSITE_URL } from "../utils/consts";
+import { IDC_WEBSITE_URL } from "../utils/consts";
 
 const props = withDefaults(defineProps<{
     to: string;
@@ -10,7 +10,7 @@ const props = withDefaults(defineProps<{
 </script>
 
 <template>
-    <a :href="`${props.internal ? '' : IDN_WEBSITE_URL}${props.to}`">
+    <a :href="`${props.internal ? '' : IDC_WEBSITE_URL}${props.to}`">
         <slot></slot>
     </a>
 </template>

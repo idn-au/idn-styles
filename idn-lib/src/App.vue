@@ -44,9 +44,11 @@ const options = [
 </script>
 
 <template>
-    <HeaderComponent title="IDN Component Library" :banners="banners" />
+    <HeaderComponent title="IDN Component Library" />
     <MainComponent>
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Autem sapiente nemo iusto, voluptates cum porro tempore, beatae odit doloribus harum repudiandae cumque iure fuga ullam deleniti, sed maxime. Autem, doloribus!</p>
         <FormInput type="select" id="selected" v-model="selected" :options="options" />
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque soluta labore eius voluptate suscipit earum dolorum non, molestiae alias quisquam impedit eveniet distinctio odio praesentium dolores voluptas iste modi recusandae.</p>
     </MainComponent>
     <FooterComponent />
 </template>
