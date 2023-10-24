@@ -1,26 +1,19 @@
-name: Build & publish npm package to GitHub Packages
+name: Build on push to main branch
 on:
-  release:
-    types:
-      - published
+  push:
+    branches:
+      - main
   workflow_dispatch:
 jobs:
-  publish:
+  build:
     defaults:
       run:
         working-directory: idn-lib
     runs-on: ubuntu-latest 
-    permissions: 
-      contents: read
-      packages: write 
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: 20 # sass breaks with node v21
-          registry-url: 'https://npm.pkg.github.com'
       - run: npm ci --legacy-peer-deps
       - run: CI=false npm run build
-      - run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
