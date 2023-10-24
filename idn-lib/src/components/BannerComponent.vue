@@ -1,37 +1,36 @@
-<script setup>
+<script lang="ts" setup>
 import { ref } from "vue";
+import { FontAwesomeIcon, FontAwesomeLayers } from "@fortawesome/vue-fontawesome";
+import { faXmark, faInfo, faScrewdriverWrench, faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
+import { faCheckCircle, faCircle as faCircleRegular, faXmarkCircle } from "@fortawesome/free-regular-svg-icons";
 
 const show = ref(true);
 
-const typeIcons = {
-    "success": "circle-check",
-    "dev": "screwdriver-wrench",
-    "info": "circle-info",
-    "warning": "triangle-exclamation",
-    "danger": "circle-xmark"
-};
-
-const props = defineProps({
-    type: {
-        type: String,
-        default: "info"
-    },
-    dismissable: {
-        type: Boolean,
-        default: false
-    }
+const props = withDefaults(defineProps<{
+    type: "success" | "info" | "dev" | "warning" | "danger";
+    dismissable?: boolean;
+}>(), {
+    type: "info",
+    dismissable: false
 });
 </script>
 
 <template>
     <div :class="`banner ${props.type}`" v-show="show">
         <div class="banner-icon">
-            <i :class="`fa-regular fa-${typeIcons[props.type]}`"></i>
+            <FontAwesomeIcon v-if="props.type === 'success'" :icon="faCheckCircle" />
+            <FontAwesomeIcon v-else-if="props.type === 'dev'" :icon="faScrewdriverWrench" />
+            <FontAwesomeLayers v-else-if="props.type === 'info'" fixed-width>
+                <FontAwesomeIcon :icon="faCircleRegular" />
+                <FontAwesomeIcon :icon="faInfo" transform="shrink-6" />
+            </FontAwesomeLayers>
+            <FontAwesomeIcon v-else-if="props.type === 'warning'" :icon="faExclamationTriangle" />
+            <FontAwesomeIcon v-else-if="props.type === 'danger'" :icon="faXmarkCircle" />
         </div>
         <div class="banner-content">
             <slot></slot>
         </div>
-        <button v-if="props.dismissable" class="banner-close-btn" @click="show = false"><i class="fa-regular fa-xmark"></i></button>
+        <button v-if="props.dismissable" class="banner-close-btn" @click="show = false"><font-awesome-icon :icon="faXmark" /></button>
     </div>
 </template>
 

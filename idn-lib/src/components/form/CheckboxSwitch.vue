@@ -1,18 +1,16 @@
-<script setup>
+<script lang="ts" setup>
 import { ref } from "vue";
-const props = defineProps({
-    checked: {
-        required: true,
-        type: Boolean
-    },
-    disabled: Boolean,
-    value: String,
-    id: String
-});
+
+const props = defineProps<{
+    checked: boolean;
+    disabled?: boolean;
+    value?: string;
+    id: string;
+}>();
 
 const emit = defineEmits(["change", "focus", "blur"]);
 
-const checkboxRef = ref(null);
+const checkboxRef = ref<HTMLElement | null>(null);
 </script>
 
 <template>
@@ -29,8 +27,8 @@ const checkboxRef = ref(null);
     />
     <div
         :class="`switch ${props.checked ? 'checked' : ''} ${props.disabled ? 'disabled' : ''}`"
-        @click="!props.disabled ? checkboxRef.click() : null"
-        :tabindex="!props.disabled ? '0' : null"
+        @click="(checkboxRef && !props.disabled) ? checkboxRef.click() : undefined"
+        :tabindex="!props.disabled ? '0' : undefined"
         @focus="emit('focus')"
         @blur="emit('blur')"
     >
@@ -40,7 +38,6 @@ const checkboxRef = ref(null);
 
 <style lang="scss" scoped>
 @import "@/assets/sass/_variables.scss";
-@import "@/assets/sass/_mixins.scss";
 
 $radius: 16px;
 $width: 42px;
@@ -87,8 +84,6 @@ $transitionTiming: ease-in-out;
     &.disabled {
         cursor: default;
         opacity: 0.6;
-    }
-
-    
+    }    
 }
 </style>

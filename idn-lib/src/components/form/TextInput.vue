@@ -1,30 +1,13 @@
-<script setup>
+<script lang="ts" setup>
 import { ref, computed, watch } from "vue";
+import { TextInputProps } from "../../types";
 
-const props = defineProps({
-    type: {
-        type: String,
-        required: true
-    },
-    modelValue: {
-        type: String,
-        required: true
-    },
-    label: {
-        type: String,
-        required: true
-    },
-    placeholder: String,
-    disabled: Boolean,
-    id: String,
-    required: Boolean,
-    validationFns: Array
-});
+const props = defineProps<TextInputProps>();
 
 const emit = defineEmits(["update:modelValue", "blur", "focus", "validate", "float"]);
 
 const inFocus = ref(false);
-const componentRef = ref(null);
+const componentRef = ref<HTMLElement | null>(null);
 
 const labelFloat = computed(() => {
     if (inFocus.value) {
@@ -42,8 +25,8 @@ watch(labelFloat, (newValue) => {
     emit("float", newValue);
 });
 
-function updateValue(e) {
-    emit("update:modelValue", e.target.value);
+function updateValue(e: Event) {
+    emit("update:modelValue", (e.target as HTMLInputElement).value);
 }
 
 function clearValue() {
@@ -62,16 +45,10 @@ async function validate() {
     // run array of validation functions
     if (props.validationFns) {
         for (const func of props.validationFns) {
-            if (func.constructor.name === "AsyncFunction") {
-                const [valid, message] = await func(props.modelValue);
-                if (!valid) {
-                    validationMessages.push(message);
-                }
-            } else {
-                const [valid, message] = func(props.modelValue);
-                    if (!valid) {
-                    validationMessages.push(message);
-                }
+            // validation functions are now always async
+            const result = await func(props.modelValue);
+            if (!result.valid) {
+                validationMessages.push(result.invalidMessage);
             }
         }
     }
@@ -80,9 +57,11 @@ async function validate() {
 }
 
 function focus() {
-    inFocus.value = true;
-    componentRef.value.focus();
-    emit("focus");
+    if (componentRef.value) {
+        inFocus.value = true;
+        componentRef.value.focus();
+        emit("focus");
+    }
 }
 
 defineExpose({ clearValue, focus });

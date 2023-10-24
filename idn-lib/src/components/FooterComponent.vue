@@ -1,8 +1,10 @@
-<script setup>
-import aiatsisLogo from "@/assets/images/AIATSIS-WhiteCrest-landscape.png";
-import anuLogo from "@/assets/images/ANU-WhiteCrest-landscape.png";
-import ardcLogo from "@/assets/images/ARDC-WhiteCrest-stacked.png";
-import umLogo from "@/assets/images/UMelb-WhiteCrest-landscape.png";
+<script lang="ts" setup>
+import aiatsisLogo from "../../../static-assets/images/AIATSIS-WhiteCrest-landscape.png";
+import anuLogo from "../../../static-assets/images/ANU-WhiteCrest-landscape.png";
+import ardcLogo from "../../../static-assets/images/ARDC-WhiteCrest-stacked.png";
+import umLogo from "../../../static-assets/images/UMelb-WhiteCrest-landscape.png";
+
+const currentYear = new Date().getFullYear();
 </script>
 
 <template>
@@ -24,7 +26,7 @@ import umLogo from "@/assets/images/UMelb-WhiteCrest-landscape.png";
             </div>
             <div id="footer-bottom">
                 <p>The <a href="https://mspgh.unimelb.edu.au/centres-institutes/centre-for-health-equity/research-group/indigenous-data-network" target="_blank">Indigenous Data Network (IDN)</a> is within the <a href="https://www.unimelb.edu.au" target="_blank">University of Melbourne</a>. It was established in 2018 to support and coordinate the governance of Indigenous data for Aboriginal and Torres Strait Islander peoples and empower Aboriginal and Torres Strait Islander communities to decide their own local data priorities.</p>
-                <p>This website and content, &copy; Indigenous Data Network, 2022</p>
+                <p>This website and content, &copy; Indigenous Data Network, {{ currentYear }}</p>
             </div>
         </div>
     </footer>
@@ -32,7 +34,6 @@ import umLogo from "@/assets/images/UMelb-WhiteCrest-landscape.png";
 
 <style lang="scss" scoped>
 @import "@/assets/sass/_variables.scss";
-$padding: 20px;
 
 footer {
     display: flex;
@@ -50,12 +51,23 @@ footer {
             
             gap: $padding;
             padding: $padding 60px;
-            height: 11vw;
-            max-height: 180px;
+            max-height: 280px;
             display: grid;
             grid-template-rows: minmax(0, 1fr);
             grid-auto-flow: column;
             grid-auto-columns: 1fr;
+
+            @media only screen and (max-width: $mdBreakpoint) {
+                max-height: 280px;
+                padding: $padding 44px;
+                grid-template-rows: repeat(2, minmax(0, 1fr));
+            }
+
+            @media only screen and (max-width: $smBreakpoint) {
+                max-height: 500px;
+                padding: $padding 32px;
+                grid-template-rows: repeat(4, minmax(0, 1fr));
+            }
 
             div {
                 max-height: 100%;
@@ -83,7 +95,7 @@ footer {
         }
 
         #footer-bottom {
-            padding: $padding;
+            padding: 20px;
             background-color: #eeeeee;
         }
     }

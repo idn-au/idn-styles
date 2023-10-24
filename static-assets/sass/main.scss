@@ -1,0 +1,95 @@
+@import "variables";
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    height: 100vh;
+    font-family: Helvetica, Arial, sans-serif;
+    color: #4a4a4a;
+    font-weight: lighter;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: black;
+    font-weight: normal;
+}
+
+h1 {
+    // color: black;
+    font-size: 2.6em;
+    // font-weight: bold;
+    margin: 0.8em 0;
+}
+
+h2 {
+    // color: black;
+    font-size: 2em;
+    // font-weight: bold;
+    margin: 0.8em 0;
+}
+
+h3 {
+    // color: black;
+    font-size: 1.67em;
+    // font-weight: bold;
+    margin: 0.7em 0;
+}
+
+h4 {
+    // color: black;
+    font-size: 1.5em;
+    // font-weight: bold;
+    margin: 0.6em 0;
+}
+
+h5 {
+    // color: black;
+    font-size: 1.3em;
+    // font-weight: bold;
+    margin: 0.5em 0;
+}
+
+h6 {
+    // color: black;
+    font-size: 1.2em;
+    // font-weight: bold;
+    margin: 0.4em 0;
+}
+
+p {
+    margin: 0.8em 0;
+}
+
+a {
+    text-decoration: none;
+    color: $linkColor;
+    transition: color 0.2s ease-in-out;
+
+    &:hover {
+        color: $linkHover;
+        text-decoration: underline;
+    }
+
+    // &[target="_blank"] {
+    //     &::after {
+    //         content: "\f08e";
+    //         font: var(--fa-font-regular);
+    //         font-weight: 800;
+    //         font-size: 0.8rem;
+    //         padding-left: 4px;
+    //     }
+    // }
+}
+
+#app {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+// input:not([type="checkbox"]):not([type="radio"]) {
+//     min-width: 0;
+// }

@@ -1,32 +1,15 @@
-<script setup>
-const props = defineProps({
-    modelValue: {
-        type: String,
-        required: true
-    },
-    label: {
-        type: String,
-        required: true
-    },
-    options: { // [{label: "", value: ""}, ...]
-        type: Array,
-        required: true
-    },
-    clearButton: Boolean,
-    disabled: Boolean,
-    id: String,
-    validationFns: Array,
-    required: Boolean,
-    invalidMessages: Array,
-});
+<script lang="ts" setup>
+import { RadioInputProps } from "../../types";
+
+const props = defineProps<RadioInputProps>();
 
 const emit = defineEmits(["update:modelValue", "blur", "validate"]);
 
-function updateValue(e) {
-    emit("update:modelValue", e.target.value);
+function updateValue(e: Event) {
+    emit("update:modelValue", (e.target as HTMLInputElement).value);
 }
 
-function validate() {
+async function validate() {
     let validationMessages = [];
     if (props.required && props.modelValue === "") {
         validationMessages.push(`${props.label} must not be empty.`);
@@ -36,12 +19,13 @@ function validate() {
     
     // run array of validation functions
     if (props.validationFns) {
-        props.validationFns.forEach(func => {
-            const [valid, message] = func(props.modelValue);
-            if (!valid) {
-                validationMessages.push(message);
+        for (const func of props.validationFns) {
+            // validation functions are now always async
+            const result = await func(props.modelValue);
+            if (!result.valid) {
+                validationMessages.push(result.invalidMessage);
             }
-        });
+        }
     }
 
     emit("validate", validationMessages);

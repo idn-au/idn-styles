@@ -1,109 +1,61 @@
-<script setup>
-import { computed, ref, useSlots, defineAsyncComponent, onMounted } from "vue";
-import ToolTip from "@/components/ToolTip.vue";
+<script lang="ts" setup>
+import { computed, ref, useSlots, onMounted } from "vue";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faQuestionCircle } from "@fortawesome/free-regular-svg-icons";
+import type { CheckBoxInputProps, TextInputProps, SelectInputProps, RadioInputProps, TextareaInputProps, DateInputProps, FormInputProps } from "../../types";
+import SelectInput from "./SelectInput.vue";
+import CheckboxInput from "./CheckboxInput.vue";
+import RadioInput from "./RadioInput.vue";
+import TextareaInput from "./TextareaInput.vue";
+import DateInput from "./DateInput.vue";
+import TextInput from "./TextInput.vue";
+import ToolTip from "../ToolTip.vue";
 
-const props = defineProps({
-    type: {
-        type: String,
-        required: true
-    },
-    modelValue: {
-        required: true
-    },
-    label: String,
-    description: String,
-    placeholder: String,
-    clearButton: Boolean,
-    options: Array, // select, multiple checkbox & radio
-    multiple: Boolean, // select & checkbox
-    chips: Boolean, // select
-    searchable: Boolean, // select
-    switch: Boolean, // checkbox
-    leftLabel: String, // switch checkbox
-    rightLabel: String, // switch checkbox
-    disabled: Boolean,
-    id: String,
-    required: Boolean,
-    validationFns: Array,
-    tooltip: String,
-    minYear: Number, // date-optional
-    direction: String, // multiple checkboxes
-    allowAdd: Boolean // select
-});
+const props = defineProps<FormInputProps>();
 
 const slots = useSlots();
 
 const emit = defineEmits(["update:modelValue", "blur", "validate"]);
 
-const InputComponent = defineAsyncComponent(() => {
-    switch (props.type) {
-        case "select":
-            return import("@/components/form/SelectInput.vue");
-        case "checkbox":
-            return import("@/components/form/CheckboxInput.vue");
-        case "radio":
-            return import("@/components/form/RadioInput.vue");
-        case "textarea":
-            return import("@/components/form/TextareaInput.vue");
-        case "date":
-        case "date-optional":
-        case "datetime-local":
-        case "month":
-        case "time":
-        case "week":
-            return import("@/components/form/DateInput.vue");
-        case "text":
-        case "email":
-        case "url":
-        case "search":
-        case "password":
-        case "tel":
-        case "number":
-            return import("@/components/form/TextInput.vue");
-        default:
-            return import("@/components/form/TextInput.vue");
-    }
-});
-
 const inFocus = ref(false);
-const inputRef = ref(null);
+const inputRef = ref<typeof CheckboxInput | typeof SelectInput | typeof RadioInput | typeof TextareaInput | typeof DateInput | typeof TextInput | null>(null);
 const labelFloat = ref(props.type.startsWith("date"));
-const validationMessages = ref([]);
+const validationMessages = ref<string[]>([]);
 
 const invalid = computed(() => {
     return validationMessages.value.length > 0;
-})
+});
 
 // text-like: text, email, select, textarea, etc.
 // list-like: radio, checkbox
 const textLike = computed(() => {
-    return props.type !== "checkbox" && props.type !== "radio";
+    return [
+        "button",
+        "color",
+        "date",
+        "datetime-local",
+        "date-optional",
+        "email",
+        "file",
+        "hidden",
+        "image",
+        "month",
+        "number",
+        "password",
+        "range",
+        "reset",
+        "search",
+        "select",
+        "submit",
+        "tel",
+        "text",
+        "textarea",
+        "time",
+        "url",
+        "week"
+    ].includes(props.type);
 });
-
-// const labelIsFloating = computed(() => {
-//     if (inFocus.value) {
-//         console.log("in focus")
-//         return true;
-//     } else if (props.type === "date") {
-//         return true;
-//     } else if (props.type === "select") {
-//         if (props.multiple && props.modelValue.length > 0) {
-//             return true;
-//         } else if (!props.multiple && props.modelValue !== "") {
-//             return true;
-//         } else if (props.placeholder) {
-//             console.log("has placeholder")
-//             return true;
-//         } else {
-//             console.log("no placeholder")
-//             return false;
-//         }
-//     } else if (props.modelValue !== "") {
-//         return true;
-//     } else {
-//         return false;
-//     }
-// });
 
 const calcPlaceholder = computed(() => {
     if (props.type === "select") {
@@ -113,7 +65,7 @@ const calcPlaceholder = computed(() => {
             return undefined;
         }
     } else { // text
-        if (inFocus.value && props.modelValue === '') {
+        if (inFocus.value && props.modelValue === '' && textLike) {
             return props.placeholder;
         } else {
             return undefined;
@@ -121,7 +73,7 @@ const calcPlaceholder = computed(() => {
     }
 });
 
-function validate(msgs) {
+function validate(msgs: string[]) {
     validationMessages.value = msgs;
     emit("validate", msgs.length === 0);
 }
@@ -158,14 +110,69 @@ onMounted(() => {
                         v-if="textLike"
                         :class="`input-label ${labelFloat ? 'float' : ''} ${props.type === 'select' ? 'no-cursor' : ''}`"
                         :for="props.id"
-                        @click="!props.disabled ? inputRef.focus() : null"
+                        @click="(inputRef && !props.disabled) ? inputRef.focus() : null"
                     >
                         {{ props.label }}
                         <span v-if="props.required" class="required">*</span>
                     </label>
-                    <InputComponent
+                    <SelectInput
+                        v-if="props.type === 'select'"
                         class="input-component"
-                        v-bind="props"
+                        v-bind="(props as SelectInputProps)"
+                        ref="inputRef"
+                        @update:modelValue="emit('update:modelValue', $event)"
+                        @blur="inFocus = false"
+                        @focus="inFocus = true"
+                        @validate="validate($event)"
+                        @float="labelFloat = $event"
+                        :placeholder="calcPlaceholder"
+                    />
+                    <CheckboxInput
+                        v-else-if="props.type === 'checkbox'"
+                        class="input-component"
+                        v-bind="(props as CheckBoxInputProps)"
+                        ref="inputRef"
+                        @update:modelValue="emit('update:modelValue', $event)"
+                        @blur="inFocus = false"
+                        @focus="inFocus = true"
+                        @validate="validate($event)"
+                    />
+                    <RadioInput
+                        v-else-if="props.type === 'radio'"
+                        class="input-component"
+                        v-bind="(props as RadioInputProps)"
+                        ref="inputRef"
+                        @update:modelValue="emit('update:modelValue', $event)"
+                        @blur="inFocus = false"
+                        @focus="inFocus = true"
+                        @validate="validate($event)"
+                    />
+                    <TextareaInput
+                        v-else-if="props.type === 'textarea'"
+                        class="input-component"
+                        v-bind="(props as TextareaInputProps)"
+                        ref="inputRef"
+                        @update:modelValue="emit('update:modelValue', $event)"
+                        @blur="inFocus = false"
+                        @focus="inFocus = true"
+                        @validate="validate($event)"
+                        @float="labelFloat = $event"
+                        :placeholder="calcPlaceholder"
+                    />
+                    <DateInput
+                        v-else-if="['date', 'date-optional', 'datetime-local', 'month', 'time', 'week'].includes(props.type)"
+                        class="input-component"
+                        v-bind="(props as DateInputProps)"
+                        ref="inputRef"
+                        @update:modelValue="emit('update:modelValue', $event)"
+                        @blur="inFocus = false"
+                        @focus="inFocus = true"
+                        @validate="validate($event)"
+                    />
+                    <TextInput
+                        v-else
+                        class="input-component"
+                        v-bind="(props as TextInputProps)"
                         ref="inputRef"
                         @update:modelValue="emit('update:modelValue', $event)"
                         @blur="inFocus = false"
@@ -178,10 +185,10 @@ onMounted(() => {
                 <button
                     v-if="props.clearButton && textLike"
                     class="input-clear-btn"
-                    @click="inputRef.clearValue()"
+                    @click="inputRef && inputRef.clearValue()"
                     :disabled="props.disabled"
                 >
-                    <i class="fa-regular fa-xmark"></i>
+                <FontAwesomeIcon :icon="faXmark" />
                 </button>
                 <div v-if="slots.append" class="input-append">
                     <slot name="append"></slot>
@@ -189,7 +196,7 @@ onMounted(() => {
             </div>
             <slot name="after"></slot>
             <ToolTip v-if="!!props.tooltip || !!slots.tooltip">
-                <i class="fa-regular fa-circle-question"></i>
+                <FontAwesomeIcon :icon="faQuestionCircle" />
                 <template #text>
                     <slot name="tooltip">{{ props.tooltip }}</slot>
                 </template>
@@ -206,7 +213,6 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 @import "@/assets/sass/_variables.scss";
-@import "@/assets/sass/_mixins.scss";
 
 $inputBg: #f7f7f7;
 $focus: #3780ee;
@@ -274,7 +280,7 @@ $labelFloatColor: rgba($color: $labelColor, $alpha: 0.8);
                 cursor: pointer;
                 padding: 6px 12px;
                 color: grey;
-                @include transition(color);
+                transition: color 0.2s ease-in-out;
 
                 &:hover {
                     color: black;
@@ -306,7 +312,7 @@ $labelFloatColor: rgba($color: $labelColor, $alpha: 0.8);
                 border: 1px solid $borderColor;
                 border-radius: $borderRadius;
                 background-color: $inputBg;
-                @include transition(box-shadow);
+                transition: box-shadow 0.2s ease-in-out;
 
                 &.focus {
                     box-shadow: 0px 0px 6px 2px rgba($color: $focus, $alpha: 0.4);
@@ -353,7 +359,7 @@ $labelFloatColor: rgba($color: $labelColor, $alpha: 0.8);
                         position: absolute;
                         transform-origin: top left;
                         transform: translate(0, 11px) scale(1);
-                        @include transitionAll(all .1s ease-in-out);
+                        transition: all .1s ease-in-out;
                         color: $labelColor;
 
                         &.no-cursor {

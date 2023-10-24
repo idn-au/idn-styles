@@ -1,38 +1,23 @@
-<script setup>
+<script lang="ts" setup>
 import { ref, computed, watch, onMounted } from "vue";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { faXmark, faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
+import { faSquare, faSquareCheck } from "@fortawesome/free-regular-svg-icons";
+import { SelectInputProps, Option } from "../../types";
 
-const props = defineProps({
-    modelValue: {
-        type: [String, Array],
-        required: true
-    },
-    label: {
-        type: String,
-        required: true
-    },
-    options: { // [{label: "", value: ""}, ...]
-        type: Array,
-        required: true
-    },
-    placeholder: String,
-    multiple: Boolean,
-    chips: Boolean,
-    searchable: Boolean,
-    disabled: Boolean,
-    id: String,
-    required: Boolean,
-    validationFns: Array,
-    allowAdd: Boolean
-});
+const props = defineProps<SelectInputProps>();
+// const props = withDefaults(defineProps<FormInputBaseProps & SelectInputProps>(), {
+//     multiple: false,
+// });
 
 const emit = defineEmits(["update:modelValue", "blur", "focus", "validate", "float"]);
 
 const searchTerm = ref("");
 // const selected = ref(props.multiple ? [] : "");
 const inFocus = ref(false);
-const componentRef = ref(null);
-const searchRef = ref(null);
-const customOptions = ref([]);
+const componentRef = ref<HTMLElement | null>(null);
+const searchRef = ref<HTMLElement | null>(null);
+const customOptions = ref<Option[]>([]);
 
 const optionsArray = computed(() => {
     return props.options.concat(customOptions.value);
@@ -63,7 +48,7 @@ watch(labelFloat, (newValue) => {
 //     }
 // }, { deep: true });
 
-function updateValue(e) {
+function updateValue(e: string | string[]) {
     emit("update:modelValue", e);
 }
 
@@ -73,7 +58,7 @@ function clearValue() {
     emit("validate", []);
 }
 
-function validate() {
+async function validate() {
     let validationMessages = [];
     if (props.required && (props.multiple ? props.modelValue.length === 0 : props.modelValue === "")) {
         validationMessages.push(`${props.label} must not be empty.`);
@@ -83,12 +68,13 @@ function validate() {
     
     // run array of validation functions
     if (props.validationFns) {
-        props.validationFns.forEach(func => {
-            const [valid, message] = func(props.modelValue);
-            if (!valid) {
-                validationMessages.push(message);
+        for (const func of props.validationFns) {
+            // validation functions are now always async
+            const result = await func(props.modelValue);
+            if (!result.valid) {
+                validationMessages.push(result.invalidMessage);
             }
-        });
+        }
     }
 
     emit("validate", validationMessages);
@@ -99,7 +85,7 @@ const filteredOptions = computed(() => {
 });
 
 const chips = computed(() => {
-    if (props.chips && props.multiple) {
+    if (props.multiple && props.chips) {
         return optionsArray.value.filter(option => props.modelValue.includes(option.value));
     } else {
         return null;
@@ -123,7 +109,7 @@ const displayValue = computed(() => {
     }
 });
 
-function clickOption(option) {
+function clickOption(option: Option) {
     if (props.multiple) {
         let selected = [...props.modelValue];
         if (selected.includes(option.value)) {
@@ -147,7 +133,7 @@ function addOption(val = searchTerm.value) {
     clickOption(option);
 }
 
-function isSelected(option) {
+function isSelected(option: Option) {
     if (props.multiple) {
         return props.modelValue.includes(option.value);
     } else {
@@ -158,24 +144,24 @@ function isSelected(option) {
 function focus() {
     if (!props.disabled) {
         inFocus.value = true;
-        if (props.searchable) {
+        if (props.searchable && searchRef.value) {
             searchRef.value.focus();
-        } else {
+        } else if (componentRef.value) {
             componentRef.value.focus();
         }
         emit("focus");
     }
 }
 
-function blur(e) {
-    if (!componentRef.value.contains(e.relatedTarget)) {
+function blur(e: FocusEvent | KeyboardEvent) {
+    if (componentRef.value && ((e instanceof FocusEvent && !componentRef.value.contains(e.relatedTarget as Node)) || e instanceof KeyboardEvent)) {
         inFocus.value = false;
         validate();
         emit("blur");
     }
 }
 
-function removeChip(option) {
+function removeChip(option: Option) {
     let selected = [...props.modelValue];
     const index = selected.indexOf(option.value);
     selected.splice(index, 1);
@@ -194,24 +180,24 @@ defineExpose({ clearValue, focus });
 <template>
     <div
         class="combobox"
-        :tabindex="!props.disabled ? 0 : null"
+        :tabindex="!props.disabled ? '0' : undefined"
         @focus="focus"
         @blur="blur"
-        @keyup.esc="blur($event, true)"
+        @keyup.esc="blur($event)"
         :id="props.id"
         ref="componentRef"
     >
         <div class="select-row">
             <div class="select-value">
-                <template v-if="props.chips && props.multiple">
+                <template v-if="props.multiple && props.chips">
                     <div v-for="chip in chips" class="chip">
                         {{ chip.label }}
-                        <button class="chip-remove-btn" @click="removeChip(chip)"><i class="fa-regular fa-xmark"></i></button>
+                        <button class="chip-remove-btn" @click="removeChip(chip)"><FontAwesomeIcon :icon="faXmark" /></button>
                     </div>
                 </template>
                 <template v-else>{{ displayValue }}</template>
             </div>
-            <span class="input-chevron"><i :class="`fa-regular fa-chevron-${inFocus ? 'up' : 'down'}`"></i></span>
+            <span class="input-chevron"><FontAwesomeIcon :icon="inFocus ? faChevronUp : faChevronDown" /></span>
         </div>
         <div :class="`select-dropdown ${inFocus ? '' : 'collapse'}`">
             <div v-if="props.searchable" class="search-input">
@@ -230,9 +216,9 @@ defineExpose({ clearValue, focus });
                     @click="searchTerm = ''"
                     :disabled="props.disabled"
                     @blur="blur"
-                    @keyup.esc="blur($event, true)"
+                    @keyup.esc="blur($event)"
                 >
-                    <i class="fa-regular fa-xmark"></i>
+                <FontAwesomeIcon :icon="faXmark" />
                 </button>
             </div>
             <div class="option-list">
@@ -245,10 +231,10 @@ defineExpose({ clearValue, focus });
                         :class="`option ${isSelected(option) ? 'selected' : ''} ${searchTerm && index === 0 ? 'active' : ''}`"
                         tabindex="0"
                         @blur="blur"
-                        @keyup.esc="blur($event, true)"
+                        @keyup.esc="blur($event)"
                     >
                         <span v-if="props.multiple" class="option-check">
-                            <i :class="`fa-regular fa-square${isSelected(option) ? '-check' : ''}`"></i>
+                            <FontAwesomeIcon :icon="isSelected(option) ? faSquareCheck : faSquare" />
                         </span>
                         {{ option.label }}
                     </div>
@@ -262,7 +248,7 @@ defineExpose({ clearValue, focus });
                         class="option active"
                         tabindex="0"
                         @blur="blur"
-                        @keyup.esc="blur($event, true)"
+                        @keyup.esc="blur($event)"
                     >
                         + Add option
                     </div>
@@ -274,7 +260,6 @@ defineExpose({ clearValue, focus });
 
 <style lang="scss" scoped>
 @import "@/assets/sass/_variables.scss";
-@import "@/assets/sass/_mixins.scss";
 
 $inputBg: #f7f7f7;
 
@@ -346,7 +331,7 @@ $inputBg: #f7f7f7;
             border: none;
             cursor: pointer;
             color: grey;
-            @include transition(color);
+            transition: color 0.2s ease-in-out;
 
             &:hover {
                 color: black;
@@ -385,7 +370,7 @@ $inputBg: #f7f7f7;
                 gap: 8px;
                 align-items: center;
                 border: 1px solid transparent;
-                @include transition(background-color, color);
+                transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
 
                 &.selected {
                     background-color: $primary;

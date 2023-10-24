@@ -1,16 +1,18 @@
-<script setup>
-import ConditionalLink from "@/components/ConditionalLink.vue";
-import BannerComponent from "@/components/BannerComponent.vue";
-import NavBar from "@/components/NavBar.vue";
-import idnLogo from "@/assets/images/idn-logo-250.png";
+<script lang="ts" setup>
+import BannerComponent from "./BannerComponent.vue";
+import NavBar from "./NavBar.vue";
+import MobileNavBar from "./MobileNavBar.vue";
+import InternalLink from "./InternalLink.vue";
+import { Banner } from "../types";
+import { IDN_WEBSITE_URL } from "../utils/consts";
+import idnLogo from "../../../static-assets/images/idn-logo-250.png";
 
-const props = defineProps({
-    internal: {
-        type: Boolean,
-        default: false
-    },
-    title: String,
-    banners: Array // [{"type": "dev", "message": "some message", ...}]
+const props = withDefaults(defineProps<{
+    internal?: boolean;
+    title: string;
+    banners?: Banner[];
+}>(), {
+    internal: false
 });
 </script>
 
@@ -19,45 +21,32 @@ const props = defineProps({
         {{ banner.message }}
     </BannerComponent>
     <header>
-        <div v-if="props.dev" id="dev-flag">
-            <span>Under development</span>
-        </div>
         <div id="header-content">
             <div id="header-left">
-                <slot name="logo-link">
-                    <ConditionalLink :internal="props.internal" id="idn-logo" to="/">
-                        <img :src="idnLogo" alt="IDN Logo" />
-                    </ConditionalLink>
-                </slot>
-                <div id="logo-text">
-                    <a class="heading" href="https://mspgh.unimelb.edu.au/centres-institutes/centre-for-health-equity/research-group/indigenous-data-network" target="_blank">
-                        <h1>The Indigenous Data Network</h1>
+                <a id="idn-logo" :href="IDN_WEBSITE_URL" target="_blank" rel="noopener noreferrer">
+                    <img :src="idnLogo" alt="IDN Logo" />
+                </a>
+                <a class="heading" :href="IDN_WEBSITE_URL" target="_blank">
+                    <h1>The Indigenous Data Network</h1>
+                </a>
+                <div class="sub-heading">
+                    <a class="app-title" href="/">
+                        <h2>{{ props.title }}</h2>
                     </a>
-                    <div class="sub-heading">
-                        <template v-if="props.title">
-                            <a href="/">
-                                <h2>{{ props.title }}</h2>
-                            </a>
-                            <span class="separator">|</span>
-                        </template>
-                        <slot name="heading-link">
-                            <ConditionalLink :internal="props.internal" to="/">
-                                <h2>IDN Catalogue Project</h2>
-                            </ConditionalLink>
-                        </slot>
-                    </div>
+                    <span class="separator">|</span>
+                    <InternalLink class="idc-title" :internal="props.internal" to="/">
+                        <h2>IDN Catalogue Project</h2>
+                    </InternalLink>
                 </div>
             </div>
-            <NavBar :internal="props.internal">
-                <slot name="links"></slot>
-            </NavBar>
+            <NavBar :internal="props.internal" :title="title" />
         </div>
     </header>
+    <MobileNavBar :internal="props.internal" :title="title" />
 </template>
 
 <style lang="scss" scoped>
 @import "@/assets/sass/_variables.scss";
-$padding: 20px;
 
 header {
     display: flex;
@@ -72,54 +61,99 @@ header {
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        padding: $padding;
+        // padding: 20px;
         width: 100%;
         max-width: $maxPageWidth;
         margin: 0 auto;
         flex-wrap: wrap;
 
         #header-left {
-            display: flex;
-            flex-direction: row;
-            gap: 20px;
+            gap: 16px;
+            padding: 20px;
+            display: grid;
+            grid-template: repeat(2, min-content) / min-content 1fr;
 
-            :deep(#idn-logo) > img {
-                height: 100px;
+            @media only screen and (max-width: $mdBreakpoint) {
+                padding: 16px;
+            }
+            
+            @media only screen and (max-width: $smBreakpoint) {
+                padding: 12px;
+                padding-bottom: 0;
             }
 
-            #logo-text {
+            #idn-logo {
+                margin: auto 0;
+                grid-row: span 2;
+
+                @media only screen and (max-width: $smBreakpoint) {
+                    grid-row: unset;
+                }
+
+                img {
+                    width: 100px;
+
+                    @media only screen and (max-width: $mdBreakpoint) {
+                        width: 80px;
+                    }
+
+                    @media only screen and (max-width: $smBreakpoint) {
+                        width: 60px;
+                    }
+                }
+            }
+
+            .heading {
+                margin: 0;
+            }
+
+            .sub-heading {
                 display: flex;
-                flex-direction: column;
-                justify-content: space-around;
+                flex-direction: row;
+                gap: 12px;
+                align-items: center;
+                // margin-bottom: 18px;
 
-                .sub-heading {
-                    display: flex;
-                    flex-direction: row;
-                    gap: 12px;
-                    align-items: center;
-                    margin-bottom: 18px;
+                @media only screen and (max-width: $smBreakpoint) {
+                    grid-column: span 2;
+                    flex-direction: column-reverse;
+                    align-items: flex-start;
+                }
 
-                    .separator {
-                        font-size: 1.2rem;
-                        font-weight: 100;
-                        line-height: 1.1;
+                .app-title {
+                    @media only screen and (max-width: $smBreakpoint) {
+                        display: none;
                     }
                 }
 
-                :deep(a) {
-                    color: black;
+                .separator {
+                    font-size: 1.2rem;
+                    font-weight: 100;
+                    line-height: 1.1;
+
+                    @media only screen and (max-width: $smBreakpoint) {
+                        display: none;
+                    }
                 }
 
-                h1 {
-                    margin: 0;
-                    font-size: 26px;
-                    margin-top: 6px;
+                .idc-title {
+                    
                 }
+            }
 
-                :deep(h2) {
-                    margin: 0;
-                    font-size: 20px;
-                }
+            a {
+                color: black;
+            }
+
+            h1 {
+                margin: 0;
+                font-size: 26px;
+                margin-top: 6px;
+            }
+
+            h2 {
+                margin: 0;
+                font-size: 20px;
             }
         }
     }
