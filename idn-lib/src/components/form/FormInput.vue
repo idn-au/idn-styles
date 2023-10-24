@@ -3,7 +3,7 @@ import { computed, ref, useSlots, onMounted } from "vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { faQuestionCircle } from "@fortawesome/free-regular-svg-icons";
-import type { CheckBoxInputProps, TextInputProps, SelectInputProps, RadioInputProps, TextareaInputProps, DateInputProps } from "../../types";
+import type { CheckBoxInputProps, TextInputProps, SelectInputProps, RadioInputProps, TextareaInputProps, DateInputProps, FormInputProps } from "../../types";
 import SelectInput from "./SelectInput.vue";
 import CheckboxInput from "./CheckboxInput.vue";
 import RadioInput from "./RadioInput.vue";
@@ -12,44 +12,14 @@ import DateInput from "./DateInput.vue";
 import TextInput from "./TextInput.vue";
 import ToolTip from "../ToolTip.vue";
 
-const props = defineProps<CheckBoxInputProps | TextInputProps | SelectInputProps | RadioInputProps | TextareaInputProps | DateInputProps>();
+const props = defineProps<FormInputProps>();
 
 const slots = useSlots();
 
 const emit = defineEmits(["update:modelValue", "blur", "validate"]);
 
-// const InputComponent = defineAsyncComponent(() => {
-//     switch (props.type) {
-//         case "select":
-//             return import("./SelectInput.vue");
-//         case "checkbox":
-//             return import("./CheckboxInput.vue");
-//         case "radio":
-//             return import("./RadioInput.vue");
-//         case "textarea":
-//             return import("./TextareaInput.vue");
-//         case "date":
-//         case "date-optional":
-//         case "datetime-local":
-//         case "month":
-//         case "time":
-//         case "week":
-//             return import("./DateInput.vue");
-//         case "text":
-//         case "email":
-//         case "url":
-//         case "search":
-//         case "password":
-//         case "tel":
-//         case "number":
-//             return import("./TextInput.vue");
-//         default:
-//             return import("./TextInput.vue");
-//     }
-// });
-
 const inFocus = ref(false);
-const inputRef = ref<typeof SelectInput | typeof CheckboxInput | typeof RadioInput | typeof TextareaInput | typeof DateInput | typeof TextInput | null>(null);
+const inputRef = ref<typeof CheckboxInput | typeof SelectInput | typeof RadioInput | typeof TextareaInput | typeof DateInput | typeof TextInput | null>(null);
 const labelFloat = ref(props.type.startsWith("date"));
 const validationMessages = ref<string[]>([]);
 
@@ -86,31 +56,6 @@ const textLike = computed(() => {
         "week"
     ].includes(props.type);
 });
-
-// const labelIsFloating = computed(() => {
-//     if (inFocus.value) {
-//         console.log("in focus")
-//         return true;
-//     } else if (props.type === "date") {
-//         return true;
-//     } else if (props.type === "select") {
-//         if (props.multiple && props.modelValue.length > 0) {
-//             return true;
-//         } else if (!props.multiple && props.modelValue !== "") {
-//             return true;
-//         } else if (props.placeholder) {
-//             console.log("has placeholder")
-//             return true;
-//         } else {
-//             console.log("no placeholder")
-//             return false;
-//         }
-//     } else if (props.modelValue !== "") {
-//         return true;
-//     } else {
-//         return false;
-//     }
-// });
 
 const calcPlaceholder = computed(() => {
     if (props.type === "select") {

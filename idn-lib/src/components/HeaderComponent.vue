@@ -3,16 +3,14 @@ import BannerComponent from "./BannerComponent.vue";
 import NavBar from "./NavBar.vue";
 import MobileNavBar from "./MobileNavBar.vue";
 import InternalLink from "./InternalLink.vue";
+import { Banner } from "../types";
 import { IDN_WEBSITE_URL } from "../utils/consts";
 import idnLogo from "../../../static-assets/images/idn-logo-250.png";
 
 const props = withDefaults(defineProps<{
     internal?: boolean;
     title: string;
-    banners?: {
-        type: "success" | "info" | "dev" | "warning" | "danger";
-        message: string;
-    }[];
+    banners?: Banner[];
 }>(), {
     internal: false
 });

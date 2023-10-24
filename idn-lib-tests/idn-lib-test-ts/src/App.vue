@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { ref } from "vue";
-import { HeaderComponent, MainComponent, FooterComponent, FormInput } from "idn-lib";
+import { HeaderComponent, MainComponent, FooterComponent, FormInput, type Banner } from "idn-lib";
 
-const banners = [
+const banners: Banner[] = [
     {
         type: "success",
         message: "success banner"
@@ -42,7 +42,7 @@ const selected = ref("")
 <template>
     <HeaderComponent title="TS idn lib demo" :banners="banners" />
     <MainComponent>
-        <FormInput type="select" v-model="selected" id="selected" :options="options" />
+        <FormInput type="select" :options="options" id="id" v-model="selected" label="label" />
     </MainComponent>
     <FooterComponent />
 </template>

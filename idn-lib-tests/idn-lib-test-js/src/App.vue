@@ -42,7 +42,7 @@ const selected = ref("");
 <template>
     <HeaderComponent title="JS idn lib demo" :banners="banners" />
     <MainComponent>
-        <FormInput type="select" id="selected" v-model="selected" :options="options" />
+        <FormInput type="select" v-model="selected" :options="options" id="id" label="label" />
     </MainComponent>
     <FooterComponent />
 </template>

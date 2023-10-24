@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { ref } from "vue";
-// imports will display an error in VScode, doesn't affect anything
 import HeaderComponent from "./components/HeaderComponent.vue";
 import MainComponent from "./components/MainComponent.vue";
 import FooterComponent from "./components/FooterComponent.vue";
@@ -29,7 +28,9 @@ const banners = [
     }
 ];
 
-const selected = ref("");
+const selected = ref("value 1");
+const checked = ref(true);
+const date = ref("2023-10-23");
 
 const options = [
     {
@@ -46,9 +47,39 @@ const options = [
 <template>
     <HeaderComponent title="IDN Component Library" />
     <MainComponent>
-        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Autem sapiente nemo iusto, voluptates cum porro tempore, beatae odit doloribus harum repudiandae cumque iure fuga ullam deleniti, sed maxime. Autem, doloribus!</p>
-        <FormInput type="select" id="selected" v-model="selected" :options="options" />
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque soluta labore eius voluptate suscipit earum dolorum non, molestiae alias quisquam impedit eveniet distinctio odio praesentium dolores voluptas iste modi recusandae.</p>
+        <FormInput
+            type="select"
+            v-model="selected"
+            :options="options"
+            id="id"
+        />
+        <FormInput
+            type="radio"
+            v-model="selected"
+            :options="options"
+            id="id"
+        />
+        <FormInput
+            type="checkbox"
+            v-model="checked"
+            :options="options"
+            id="id"
+        />
+        <FormInput
+            type="text"
+            v-model="selected"
+            id="id"
+        />
+        <FormInput
+            type="textarea"
+            v-model="selected"
+            id="id"
+        />
+        <FormInput
+            type="date"
+            v-model="date"
+            id="id"
+        />
     </MainComponent>
     <FooterComponent />
 </template>

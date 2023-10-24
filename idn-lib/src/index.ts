@@ -13,6 +13,8 @@ import FormField from "./components/form/FormField.vue";
 
 library.add(...fontAwesomeIcons);
 
+export * from "./types";
+
 export {
     BaseModal,
     BannerComponent,
@@ -22,5 +24,6 @@ export {
     NavBar,
     ToolTip,
     FormInput,
-    FormField
+    FormField,
+    
 };
