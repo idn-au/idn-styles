@@ -4,8 +4,9 @@ import HeaderComponent from "./components/HeaderComponent.vue";
 import MainComponent from "./components/MainComponent.vue";
 import FooterComponent from "./components/FooterComponent.vue";
 import FormInput from "./components/form/FormInput.vue";
+import { Banner } from "./types";
 
-const banners = [
+const banners: Banner[] = [
     {
         type: "success",
         message: "success banner"
@@ -27,9 +28,10 @@ const banners = [
         message: "danger banner"
     }
 ];
-
+const selectedMultiple = ref<string[]>([]);
 const selected = ref("value 1");
 const checked = ref(true);
+const text = ref("text")
 const date = ref("2023-10-23");
 
 const options = [
@@ -40,45 +42,79 @@ const options = [
     {
         label: "label 2",
         value: "value 2"
+    },
+    {
+        label: "label 3",
+        value: "value 3"
     }
 ];
 </script>
 
 <template>
-    <HeaderComponent title="IDN Component Library" />
+    <HeaderComponent title="IDN Component Library" :banners="banners" />
     <MainComponent>
         <FormInput
+            label="Select input"
             type="select"
             v-model="selected"
             :options="options"
-            id="id"
+            id="select"
         />
         <FormInput
+            label="Multiselect kitchen sink"
+            type="select"
+            v-model="selectedMultiple"
+            :options="options"
+            id="multiselect"
+            multiple
+            chips
+            allowAdd
+            searchable
+            clearButton
+            description="This multiselect field has search enabled, allowing adding custom options, and selected values are displayed as 'chips'"
+            tooltip="Test tooltip"
+        />
+        <FormInput
+            label="Radio"
             type="radio"
             v-model="selected"
             :options="options"
-            id="id"
+            id="radio"
         />
         <FormInput
+            label="checkbox"
             type="checkbox"
             v-model="checked"
             :options="options"
-            id="id"
+            id="checkbox"
         />
         <FormInput
+            label="Multiple checkboxes as switches"
+            type="checkbox"
+            v-model="selectedMultiple"
+            :options="options"
+            id="switch-group"
+            multiple
+            switch
+        />
+        <FormInput
+            label="Text input"
             type="text"
-            v-model="selected"
-            id="id"
+            v-model="text"
+            id="text"
         />
         <FormInput
+            label="Textarea"
             type="textarea"
-            v-model="selected"
-            id="id"
+            v-model="text"
+            id="textarea"
+            resize="none"
         />
         <FormInput
+            label="Date input"
             type="date"
             v-model="date"
-            id="id"
+            id="date"
         />
     </MainComponent>
     <FooterComponent />
