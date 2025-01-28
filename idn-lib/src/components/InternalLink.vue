@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { IDC_WEBSITE_URL } from "../utils/consts";
+import { IDN_WEBSITE_URL } from "../utils/consts";
 
 const props = withDefaults(defineProps<{
     to: string;
@@ -10,11 +10,10 @@ const props = withDefaults(defineProps<{
 </script>
 
 <template>
-    <a :href="`${props.internal ? '' : IDC_WEBSITE_URL}${props.to}`">
+    <RouterLink v-if="props.internal" :to="props.to">
+        <slot></slot>
+    </RouterLink>
+    <a v-else :href="`${IDN_WEBSITE_URL}${props.to}`">
         <slot></slot>
     </a>
 </template>
-
-<style lang="scss" scoped>
-
-</style>

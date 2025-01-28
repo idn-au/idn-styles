@@ -8,7 +8,7 @@ import { NAV_LINKS } from "../utils/consts";
 
 const props = defineProps<{
     internal: boolean;
-    title: string;
+    title?: string;
 }>();
 
 const collapse = ref(true);
@@ -33,7 +33,9 @@ onUnmounted(() => {
 <template>
     <nav id="mobile-main-nav" ref="mobileNavRef">
         <div v-show="scrolled" id="idn-logo"><img :src="idnLogo" alt="IDN logo"></div>
-        <a class="app-title" href="/"><h5>{{ props.title }}</h5></a>
+        <a class="app-title" href="/">
+            <h5>{{ props.title || "The Indigenous Data Network" }}</h5>
+        </a>
         <button class="collapse-btn" @click="collapse = !collapse"><FontAwesomeIcon :icon="faBars" /></button>
         <div :class="`mobile-nav ${collapse ? 'collapse' : ''}`">
             <InternalLink v-for="link in NAV_LINKS" class="navbar-link mobile" :internal="props.internal" :to="link.url">{{ link.label }}</InternalLink>

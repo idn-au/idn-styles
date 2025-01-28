@@ -4,7 +4,12 @@ import fontAwesomeIcons from "./icons/fontAwesome";
 import App from "./App.vue";
 import "../../static-assets/sass/main.scss"; // IDN stylesheet
 import "./assets/sass/main.scss"; // idn-lib stylesheet
+import router from "./router";
 
 library.add(...fontAwesomeIcons);
 
-createApp(App).mount("#app");
+const app = createApp(App);
+
+app.use(router);
+
+app.mount("#app");

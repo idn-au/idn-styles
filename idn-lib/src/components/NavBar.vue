@@ -4,7 +4,6 @@ import { NAV_LINKS } from "../utils/consts";
 
 const props = defineProps<{
     internal: boolean;
-    title: string;
 }>();
 </script>
 

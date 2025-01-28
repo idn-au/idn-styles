@@ -2,14 +2,13 @@
 import BannerComponent from "./BannerComponent.vue";
 import NavBar from "./NavBar.vue";
 import MobileNavBar from "./MobileNavBar.vue";
-import InternalLink from "./InternalLink.vue";
 import { Banner } from "../types";
-import { IDN_WEBSITE_URL } from "../utils/consts";
 import idnLogo from "../../../static-assets/images/idn-logo-250.png";
+import InternalLink from "./InternalLink.vue";
 
 const props = withDefaults(defineProps<{
     internal?: boolean;
-    title: string;
+    title?: string;
     banners?: Banner[];
 }>(), {
     internal: false
@@ -23,20 +22,16 @@ const props = withDefaults(defineProps<{
     <header>
         <div id="header-content">
             <div id="header-left">
-                <a id="idn-logo" :href="IDN_WEBSITE_URL" target="_blank" rel="noopener noreferrer">
+                <InternalLink id="idn-logo" to="/" :internal="props.internal">
                     <img :src="idnLogo" alt="IDN Logo" />
-                </a>
-                <a class="heading" :href="IDN_WEBSITE_URL" target="_blank">
-                    <h1>The Indigenous Data Network</h1>
-                </a>
-                <div class="sub-heading">
-                    <a class="app-title" href="/">
+                </InternalLink>
+                <div id="idn-logo-text">
+                    <InternalLink to="/" class="heading" :internal="props.internal">
+                        <h1>The Indigenous Data Network</h1>
+                    </InternalLink>
+                    <a v-if="props.title" class="sub-heading" href="/">
                         <h2>{{ props.title }}</h2>
                     </a>
-                    <span class="separator">|</span>
-                    <InternalLink class="idc-title" :internal="props.internal" to="/">
-                        <h2>IDN Catalogue Project</h2>
-                    </InternalLink>
                 </div>
             </div>
             <NavBar :internal="props.internal" :title="title" />
@@ -68,10 +63,10 @@ header {
         flex-wrap: wrap;
 
         #header-left {
-            gap: 16px;
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
             padding: 20px;
-            display: grid;
-            grid-template: repeat(2, min-content) / min-content 1fr;
 
             @media only screen and (max-width: $mdBreakpoint) {
                 padding: 16px;
@@ -84,11 +79,6 @@ header {
 
             #idn-logo {
                 margin: auto 0;
-                grid-row: span 2;
-
-                @media only screen and (max-width: $smBreakpoint) {
-                    grid-row: unset;
-                }
 
                 img {
                     width: 100px;
@@ -103,42 +93,22 @@ header {
                 }
             }
 
-            .heading {
-                margin: 0;
+            #idn-logo-text {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-around;
+
+                .sub-heading {
+                    margin-bottom: 18px;
+
+                    @media only screen and (max-width: $smBreakpoint) {
+                        display: none;
+                    }
+                }
             }
 
-            .sub-heading {
-                display: flex;
-                flex-direction: row;
-                gap: 12px;
-                align-items: center;
-                // margin-bottom: 18px;
-
-                @media only screen and (max-width: $smBreakpoint) {
-                    grid-column: span 2;
-                    flex-direction: column-reverse;
-                    align-items: flex-start;
-                }
-
-                .app-title {
-                    @media only screen and (max-width: $smBreakpoint) {
-                        display: none;
-                    }
-                }
-
-                .separator {
-                    font-size: 1.2rem;
-                    font-weight: 100;
-                    line-height: 1.1;
-
-                    @media only screen and (max-width: $smBreakpoint) {
-                        display: none;
-                    }
-                }
-
-                .idc-title {
-                    
-                }
+            .heading {
+                margin: 0;
             }
 
             a {
