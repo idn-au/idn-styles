@@ -37,7 +37,7 @@ router.beforeEach(() => {
         </SheetTrigger>
         <SheetContent size="right" class="p-3">
             <RouterLink to="/" class="mr-auto">
-                <img src="/logos/idc/idc-logo.png" alt="IDC logo" class="w-48 h-auto">
+                <img src="https://static.idnau.org/logos/idc/idc-logo.png" alt="IDC logo" class="w-48 h-auto">
             </RouterLink>
             <div class="flex flex-col gap-2 overflow-y-auto">
                 <div v-for="link of props.navigation">

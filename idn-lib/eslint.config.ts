@@ -17,12 +17,19 @@ export default antfu(
     },
     {
         rules: {
-            "vue/block-order": ["error", {
-                order: ["script", "template", "style"],
-            }],
-            "vue/attribute-hyphenation": ["error", "never", {
-                ignore: ["custom-prop"],
-            }],
+            "vue/block-order": [
+                "error",
+                {
+                    order: ["script", "template", "style"],
+                },
+            ],
+            "vue/attribute-hyphenation": [
+                "error",
+                "never",
+                {
+                    ignore: ["custom-prop"],
+                },
+            ],
         },
     },
 );

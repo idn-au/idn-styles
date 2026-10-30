@@ -4,7 +4,7 @@ import IDCLogo from "@/components/IDCLogo.vue";
 const props = withDefaults(defineProps<{
     image?: string;
 }>(), {
-    image: "/images/Milky_Way_IDN_Logo_75percent-fpng.webp",
+    image: "https://static.idnau.org/images/Milky_Way_IDN_Logo_75percent-fpng.webp",
 });
 </script>
 

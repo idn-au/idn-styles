@@ -8,7 +8,11 @@ import dts from "vite-plugin-dts";
 
 // https://vite.dev/config/
 export default defineConfig({
-    plugins: [vue(), dts(), tailwindcss()],
+    plugins: [
+        vue(),
+        dts(),
+        tailwindcss(),
+    ],
     build: {
         lib: {
             entry: resolve(import.meta.dirname, "src/index.ts"),

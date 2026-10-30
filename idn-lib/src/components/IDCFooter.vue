@@ -70,11 +70,11 @@ const socials: {
                 <div class="flex flex-col gap-8">
                     <div class="grid grid-cols-[3fr_min-content_2fr] items-center gap-8">
                         <RouterLink to="/" class="">
-                            <img src="/logos/idc/UoM_Indig.Data.Com_Brand_Art_RGB_Logo_White.png">
+                            <img src="https://static.idnau.org/logos/idc/UoM_Indig.Data.Com_Brand_Art_RGB_Logo_White.png">
                         </RouterLink>
                         <Separator orientation="vertical" class="!h-3/4 bg-muted-foreground" />
                         <a href="https://mspgh.unimelb.edu.au/centres-institutes/onemda/research-group/indigenous-studies-unit/indigenous-data-network" class="">
-                            <img src="/logos/idn/UoM_Indig_Studies_Unit_Brand_ART - (ICON LOCK UP) IDN - WHITE.png">
+                            <img src="https://static.idnau.org/logos/idn/UoM_Indig_Studies_Unit_Brand_ART - (ICON LOCK UP) IDN - WHITE.png">
                         </a>
                     </div>
                     <div class="flex flex-row items-center gap-2 justify-between flex-wrap">
@@ -102,7 +102,7 @@ const socials: {
 
 <style scoped>
 footer {
-    background-image: url("/graphics/network/IDC_Network graphic_White_ART-2.svg");
+    background-image: url("https://static.idnau.org/graphics/network/IDC_Network graphic_White_ART-2.svg");
     background-repeat: no-repeat;
     background-size: 40%;
     background-position: 102% 175%;

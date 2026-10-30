@@ -33,6 +33,7 @@
     ],
     "exclude": [
         "src/main.ts",
+        "src/router/*.ts",
         "src/**/__tests__/*"
     ]
 }
