@@ -1,0 +1,37 @@
+name: Sync static assets to CDN
+
+on:
+  push:
+    branches:
+      - jamie/refactor
+    paths:
+      - static/**
+      - .github/workflows/sync_static.yaml
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    env:
+      OS_AUTH_URL: https://keystone.rc.nectar.org.au:5000/v3/
+      OS_PROJECT_ID: 0a23562e67e04297b1dc3ce25a30858d
+      OS_PROJECT_NAME: "unimelb-idc"
+      OS_USER_DOMAIN_NAME: "Default"
+      OS_PROJECT_DOMAIN_ID: "default"
+      OS_USERNAME: "jamie.feiss@unimelb.edu.au"
+      OS_PASSWORD: ${{ secrets.OS_PASSWORD }}
+      OS_REGION_NAME: "Melbourne"
+      OS_INTERFACE: public
+      OS_IDENTITY_API_VERSION: 3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+      - name: Setup Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Install OpenStack Swift CLI
+        run: pip install python-swiftclient python-keystoneclient
+      - name: Upload to Swift container
+        working-directory: static
+        run: swift upload static ./*

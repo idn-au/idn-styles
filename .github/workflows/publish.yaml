@@ -1,0 +1,39 @@
+name: Publish NPM package to GitHub registry
+
+on:
+  release:
+    types:
+      - published
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+        name: Install pnpm
+        with:
+          version: 11
+          run_install: false
+      - name: Install Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: 'pnpm'
+          registry-url: 'https://npm.pkg.github.com'
+      - name: Install dependencies
+        working-directory: idn-lib
+        run: pnpm install
+      - name: Run build
+        working-directory: idn-lib
+        run: pnpm build
+      - name: Publish component lib to GitHub NPM Registry
+        working-directory: idn-lib
+        run: pnpm publish --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
