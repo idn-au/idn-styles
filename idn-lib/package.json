@@ -7,7 +7,8 @@
     "homepage": "https://github.com/idn-au/idn-styles/blob/main/README.md",
     "repository": {
         "type": "git",
-        "url": "https://github.com/idn-au/idn-styles"
+        "url": "https://github.com/idn-au/idn-styles",
+        "directory": "idn-lib"
     },
     "bugs": {
         "url": "https://github.com/idn-au/idn-styles/issues"
