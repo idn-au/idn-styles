@@ -10,7 +10,7 @@
                 <img src="https://static.idnau.org/logos/logo-um.svg" alt="UoM Logo" class="w-[80px]">
                 <img src="https://static.idnau.org/logos/ARDC-logo.png" alt="ARDC Logo" class="w-[200px] lg:hidden">
                 <img src="https://static.idnau.org/logos/NCRIS-PROVIDER.png" alt="NCRIS Logo" class="h-[100px] lg:hidden">
-                <img src="https://static.idnau.org/logos/ARDC-AUS-NCRIS-logo.png" alt="ARDC, Australian Government and NCRIS Logos" class="h-[100px] hidden lg:flex">
+                <img src="https://static.idnau.org/logos/ARDC-AUS-NCRIS-logo.png" alt="ARDC, Australian Government and NCRIS Logos" class="h-[100px] max-lg:hidden">
             </div>
 
             <div class="text-sm">

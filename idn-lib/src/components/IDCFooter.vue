@@ -1,17 +1,20 @@
 <script setup lang="ts">
 import type { IconDefinition } from "@fortawesome/free-brands-svg-icons";
-import type { NavigationItem } from "@/types.ts";
+import type { NavigationItem } from "@/types";
 import { faFacebookF, faInstagram, faLinkedinIn, faXTwitter, faYoutube } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { Newspaper } from "@lucide/vue";
 import IDCButton from "@/components/IDCButton.vue";
+import IDCLink from "@/components/IDCLink.vue";
 import { Separator } from "@/components/ui/separator";
-import { navLinks } from "@/utils/consts.ts";
+import { navLinks } from "@/utils/consts";
 
 const props = withDefaults(defineProps<{
     navigation?: NavigationItem[];
+    external?: boolean;
 }>(), {
     navigation: () => navLinks,
+    external: true,
 });
 
 const socials: {
@@ -53,27 +56,25 @@ const socials: {
             <div class="grid lg:grid-cols-2 gap-12">
                 <div class="grid sm:grid-cols-2 gap-6">
                     <div v-for="link in props.navigation">
-                        <RouterLink v-if="link.path.startsWith('/')" :to="link.path" class="text-isu-yellow! font-bold">
+                        <IDCLink :to="link.path" :external="props.external" class="text-isu-yellow! font-bold">
                             {{ link.title }}
-                        </RouterLink>
-                        <a v-else :href="link.path" class="text-isu-yellow! font-bold">{{ link.title === "Catalogue" ? "Catalogue" : link.title }}</a>
+                        </IDCLink>
                         <div class="flex flex-col">
                             <template v-for="child in link.children?.filter(c => c.path !== link.path)">
-                                <RouterLink v-if="child.path.startsWith('/')" :to="child.path" class="text-foreground!">
+                                <IDCLink :to="child.path" :external="props.external" class="text-foreground!">
                                     {{ child.title }}
-                                </RouterLink>
-                                <a v-else :href="child.path" class="text-foreground!">{{ child.title }}</a>
+                                </IDCLink>
                             </template>
                         </div>
                     </div>
                 </div>
                 <div class="flex flex-col gap-8">
                     <div class="grid grid-cols-[3fr_min-content_2fr] items-center gap-8">
-                        <RouterLink to="/" class="">
+                        <IDCLink to="/" :external="props.external">
                             <img src="https://static.idnau.org/logos/idc/UoM_Indig.Data.Com_Brand_Art_RGB_Logo_White.png">
-                        </RouterLink>
+                        </IDCLink>
                         <Separator orientation="vertical" class="!h-3/4 bg-muted-foreground" />
-                        <a href="https://mspgh.unimelb.edu.au/centres-institutes/onemda/research-group/indigenous-studies-unit/indigenous-data-network" class="">
+                        <a href="https://mspgh.unimelb.edu.au/centres-institutes/onemda/research-group/indigenous-studies-unit/indigenous-data-network">
                             <img src="https://static.idnau.org/logos/idn/UoM_Indig_Studies_Unit_Brand_ART - (ICON LOCK UP) IDN - WHITE.png">
                         </a>
                     </div>
@@ -86,9 +87,9 @@ const socials: {
                             </IDCButton>
                         </div>
                         <IDCButton colour="red" asChild>
-                            <RouterLink to="/news/newsletter">
+                            <IDCLink to="/news/newsletter" :external="props.external">
                                 <Newspaper class="size-4" /> Subscribe to our newsletter
-                            </RouterLink>
+                            </IDCLink>
                         </IDCButton>
                     </div>
                 </div>
@@ -102,7 +103,10 @@ const socials: {
 
 <style scoped>
 footer {
-    background-image: url("https://static.idnau.org/graphics/network/IDC_Network graphic_White_ART-2.svg");
+    background:
+        linear-gradient(var(--secondary), transparent),
+        url("https://static.idnau.org/graphics/network/IDC_Network graphic_White_ART-2.svg"), var(--secondary);
+    /* background-image: url("https://static.idnau.org/graphics/network/IDC_Network graphic_White_ART-2.svg"); */
     background-repeat: no-repeat;
     background-size: 40%;
     background-position: 102% 175%;

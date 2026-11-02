@@ -1,42 +1,43 @@
 <script lang="ts" setup>
 import { Menu } from "@lucide/vue";
-import Acknowledgement from "@/components/Acknowledgement.vue";
-import ARDCFooter from "@/components/ARDCFooter.vue";
-import IDCButton from "@/components/IDCButton.vue";
-import IDCFooter from "@/components/IDCFooter.vue";
-import IDCHeader from "@/components/IDCHeader.vue";
-import IDCPageHeader from "@/components/IDCPageHeader.vue";
-import IDCSeparator from "@/components/IDCSeparator.vue";
+import Acknowledgement from "../components/Acknowledgement.vue";
+import ARDCFooter from "../components/ARDCFooter.vue";
+import IDCButton from "../components/IDCButton.vue";
+import IDCFooter from "../components/IDCFooter.vue";
+import IDCHeader from "../components/IDCHeader.vue";
+import IDCPageHeader from "../components/IDCPageHeader.vue";
+import IDCSeparator from "../components/IDCSeparator.vue";
+import ScrollToTopButton from "../components/ScrollToTopButton.vue";
 </script>
 
 <template>
     <div class="min-h-dvh">
-        <IDCHeader />
-        <IDCPageHeader>
+        <IDCHeader baseUrl="https://metadata.idnau.org" />
+        <IDCPageHeader image="https://fastly.picsum.photos/id/1084/1200/800.jpg?hmac=KvJYDhjkHZmZ1Azd89hjuQnNkhukc9zO4WEDpM4I0Mg">
             <template #title>
                 Title
             </template>
             <template #description>
-                Description
+                Understand the foundational principles guiding the Indigenous Data Network, including Indigenous Data Sovereignty and responsible data governance practices.
             </template>
         </IDCPageHeader>
         <div class="max-w-[1200px] mx-auto p-2">
-            <h1 class="text-5xl">
+            <h1>
                 Title h1
             </h1>
-            <h2 class="text-3xl">
+            <h2>
                 Subtitle h2
             </h2>
-            <h3 class="text-2xl">
+            <h3>
                 Subtitle h3
             </h3>
-            <h4 class="text-xl">
+            <h4>
                 Subtitle h4
             </h4>
-            <h5 class="text-lg font-bold">
+            <h5>
                 Subtitle h5
             </h5>
-            <h6 class="font-bold">
+            <h6>
                 Subtitle h6
             </h6>
             <p>
@@ -143,5 +144,6 @@ import IDCSeparator from "@/components/IDCSeparator.vue";
         <Acknowledgement />
         <ARDCFooter />
         <IDCFooter />
+        <ScrollToTopButton />
     </div>
 </template>

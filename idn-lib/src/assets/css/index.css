@@ -209,35 +209,15 @@
 body {
     font-family: "Open Sans", sans-serif;
     background:
-        linear-gradient(var(--background), transparent), url("/graphics/pattern/IDC_Pattern_White_ART-2.svg"),
-        var(--background);
+        linear-gradient(var(--background), transparent),
+        url("https://static.idnau.org/graphics/pattern/IDC_Pattern_White_ART-2.svg"), var(--background);
 }
 
-.prose :where(h1):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
-    font-weight: 500;
-}
-
-.prose :where(a):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
-    text-decoration: none;
-}
-
-.prose
-    :where(a):not(:where([class~="not-prose"], [class~="not-prose"] *)):not(
-        h1 > a,
-        h2 > a,
-        h3 > a,
-        h4 > a,
-        h5 > a,
-        h6 > a
-    ):not(.btn):not(nav a) {
+a:not([data-slot="button"]):not(header a):not(footer a) {
     color: var(--color-link);
 }
 
-a:not(.btn):not(header a):not(footer a) {
-    color: var(--color-link);
-}
-
-a.btn:hover {
+a[data-slot="button"]:hover {
     text-decoration: none;
 }
 
@@ -259,6 +239,44 @@ h4 {
     color: var(--color-primary);
 }
 
-.prose img {
-    margin: 0;
+h1 {
+    font-size: 3rem;
+    margin-top: 1.5rem;
+    margin-bottom: 2.625rem;
+}
+
+h2 {
+    font-size: 1.875rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+h3 {
+    font-size: 1.5rem;
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+h4 {
+    font-size: 1.25rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+h5 {
+    font-size: 1.125rem;
+    font-weight: bold;
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+}
+
+h6 {
+    font-weight: bold;
+    margin-top: 0.125rem;
+    margin-bottom: 0.125rem;
+}
+
+p {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 }
