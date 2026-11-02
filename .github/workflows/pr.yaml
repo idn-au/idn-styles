@@ -23,6 +23,7 @@ jobs:
         with:
           node-version: 24
           cache: 'pnpm'
+          cache-dependency-path: idn-lib/pnpm-lock.yaml
       - name: Install dependencies
         working-directory: idn-lib
         run: pnpm install

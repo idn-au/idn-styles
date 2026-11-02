@@ -3,7 +3,7 @@ name: Sync static assets to CDN
 on:
   push:
     branches:
-      - jamie/refactor
+      - main
     paths:
       - static/**
       - .github/workflows/sync_static.yaml
