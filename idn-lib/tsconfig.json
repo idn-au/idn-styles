@@ -1,48 +1,39 @@
 {
     "compilerOptions": {
-        "target": "ES2020",
-        "useDefineForClassFields": true,
-        "module": "ESNext",
+        "target": "ESNext",
+        "jsx": "preserve",
         "lib": [
             "ES2020",
             "DOM",
             "DOM.Iterable"
         ],
-        "skipLibCheck": true,
-        /* Bundler mode */
+        "useDefineForClassFields": true,
+        "module": "ESNext",
         "moduleResolution": "bundler",
-        "allowImportingTsExtensions": true,
-        "resolveJsonModule": true,
-        "isolatedModules": true,
-        // "noEmit": true,
-        "jsx": "preserve",
-        "outDir": "dist",
-        "declaration": true,
-        /* Linting */
-        "strict": true,
-        "noUnusedLocals": true,
-        "noUnusedParameters": true,
-        "noFallthroughCasesInSwitch": true,
         "paths": {
             "@/*": [
-                "./*"
+                "./src/*"
             ]
-        }
+        },
+        "resolveJsonModule": true,
+        "allowImportingTsExtensions": true,
+        "strict": true,
+        "noFallthroughCasesInSwitch": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noEmit": true,
+        "isolatedModules": true,
+        "skipLibCheck": true
     },
-    "exclude": [
-        "src/App.vue",
-        "src/main.ts",
-        "src/router"
-    ],
     "include": [
+        "env.d.ts",
         "src/**/*.ts",
         "src/**/*.d.ts",
-        "src/**/*.tsx",
         "src/components/**/*.vue"
     ],
-    "references": [
-        {
-            "path": "./tsconfig.node.json"
-        }
+    "exclude": [
+        "src/main.ts",
+        "src/router/*.ts",
+        "src/**/__tests__/*"
     ]
 }

@@ -1,29 +1,27 @@
-import { library } from "@fortawesome/fontawesome-svg-core";
-import fontAwesomeIcons from "./icons/fontAwesome";
-import "./assets/sass/main.scss";
-import BaseModal from "./components/BaseModal.vue";
-import BannerComponent from "./components/BannerComponent.vue";
-import FooterComponent from "./components/FooterComponent.vue";
-import HeaderComponent from "./components/HeaderComponent.vue";
-import MainComponent from "./components/MainComponent.vue";
-import NavBar from "./components/NavBar.vue";
-import ToolTip from "./components/ToolTip.vue";
-import FormInput from "./components/form/FormInput.vue";
-import FormField from "./components/form/FormField.vue";
-
-library.add(...fontAwesomeIcons);
+import Acknowledgement from "./components/Acknowledgement.vue";
+import ARDCFooter from "./components/ARDCFooter.vue";
+import IDCButton from "./components/IDCButton.vue";
+import IDCFooter from "./components/IDCFooter.vue";
+import IDCHeader from "./components/IDCHeader.vue";
+import IDCLink from "./components/IDCLink.vue";
+import IDCLogo from "./components/IDCLogo.vue";
+import IDCPageHeader from "./components/IDCPageHeader.vue";
+import IDCSeparator from "./components/IDCSeparator.vue";
+import ScrollToTopButton from "./components/ScrollToTopButton.vue";
+import "./assets/css/index.css";
 
 export * from "./types";
+export * from "./utils/consts";
 
 export {
-    BaseModal,
-    BannerComponent,
-    FooterComponent,
-    HeaderComponent,
-    MainComponent,
-    NavBar,
-    ToolTip,
-    FormInput,
-    FormField,
-    
+    Acknowledgement,
+    ARDCFooter,
+    IDCButton,
+    IDCFooter,
+    IDCHeader,
+    IDCLink,
+    IDCLogo,
+    IDCPageHeader,
+    IDCSeparator,
+    ScrollToTopButton,
 };

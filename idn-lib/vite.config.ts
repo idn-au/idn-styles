@@ -1,21 +1,22 @@
-import { defineConfig } from "vite";
-import { resolve } from "path";
+/// <reference types="vitest/config" />
+import { resolve } from "node:path";
 import { fileURLToPath, URL } from "node:url";
+import tailwindcss from "@tailwindcss/vite";
 import vue from "@vitejs/plugin-vue";
-import libCss from "vite-plugin-libcss";
+import { defineConfig } from "vite";
+import dts from "vite-plugin-dts";
 
-// https://vitejs.dev/config/
+// https://vite.dev/config/
 export default defineConfig({
-    plugins: [vue(), libCss()],
-    resolve: {
-        alias: {
-            "@": fileURLToPath(new URL("./src", import.meta.url))
-        }
-    },
+    plugins: [
+        vue(),
+        dts(),
+        tailwindcss(),
+    ],
     build: {
         lib: {
-            entry: resolve(__dirname, "src/index.ts"),
-            name: "IDNLib",
+            entry: resolve(import.meta.dirname, "src/index.ts"),
+            name: "@idn-au/idn-lib",
             fileName: "idn-lib",
         },
         rollupOptions: {
@@ -24,7 +25,14 @@ export default defineConfig({
                 globals: {
                     vue: "Vue",
                 },
+                inlineDynamicImports: true, // turn off chunking
             },
         },
     },
+    resolve: {
+        alias: {
+            "@": fileURLToPath(new URL("./src", import.meta.url)),
+        },
+    },
+    test: {},
 });

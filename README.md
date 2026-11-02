@@ -1,12 +1,11 @@
 # IDN Styles
-This repo will be used as the source of truth for IDN styling, images and certain HTML content.
 
-The `idn-lib` directory is a Vue component library containing reusable components for the IDN. This library is installable with `npm` by running:
+> [!NOTE]
+> See the [style guide](style-guide.md) for IDN styling information.
 
-```
-npm install 'https://gitpkg.now.sh/idn-au/idn-styles/idn-lib?main'
-```
+Static assets are managed in the [`static/`](./static) directory, to be synced to the IDN CDN at [static.idnau.org](https://static.idnau.org).
 
+The IDN Vue.js component library `@idn-au/idn-lib` is for shared component across the IDN's websites & tools - see the [`idn-lib/`](./idn-lib) directory.
 
 ## Contact
 
@@ -15,7 +14,3 @@ npm install 'https://gitpkg.now.sh/idn-au/idn-styles/idn-lib?main'
 Indigenous Data Network  
 University of Melbourne  
 <jamie.feiss@unimelb.edu.au>
-
-_Owner Organisation_  
-*Indigenous Data Network*  
-<https://idnau.org>

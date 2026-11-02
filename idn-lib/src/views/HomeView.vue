@@ -1,125 +1,149 @@
 <script lang="ts" setup>
-import { ref } from "vue";
-import HeaderComponent from "../components/HeaderComponent.vue";
-import MainComponent from "../components/MainComponent.vue";
-import FooterComponent from "../components/FooterComponent.vue";
-import FormInput from "../components/form/FormInput.vue";
-import { Banner } from "../types";
-
-const banners: Banner[] = [
-    {
-        type: "success",
-        message: "success banner"
-    },
-    {
-        type: "info",
-        message: "info banner"
-    },
-    {
-        type: "dev",
-        message: "dev banner"
-    },
-    {
-        type: "warning",
-        message: "warning banner"
-    },
-    {
-        type: "danger",
-        message: "danger banner"
-    }
-];
-const selectedMultiple = ref<string[]>([]);
-const selected = ref("value 1");
-const checked = ref(true);
-const text = ref("text")
-const date = ref("2023-10-23");
-
-const options = [
-    {
-        label: "label 1",
-        value: "value 1"
-    },
-    {
-        label: "label 2",
-        value: "value 2"
-    },
-    {
-        label: "label 3",
-        value: "value 3"
-    }
-];
+import { Menu } from "@lucide/vue";
+import Acknowledgement from "../components/Acknowledgement.vue";
+import ARDCFooter from "../components/ARDCFooter.vue";
+import IDCButton from "../components/IDCButton.vue";
+import IDCFooter from "../components/IDCFooter.vue";
+import IDCHeader from "../components/IDCHeader.vue";
+import IDCPageHeader from "../components/IDCPageHeader.vue";
+import IDCSeparator from "../components/IDCSeparator.vue";
+import ScrollToTopButton from "../components/ScrollToTopButton.vue";
 </script>
 
 <template>
-    <HeaderComponent title="IDN Component Library" :banners="banners" internal />
-    <MainComponent>
-        <FormInput
-            label="Select input"
-            type="select"
-            v-model="selected"
-            :options="options"
-            id="select"
-        />
-        <FormInput
-            label="Multiselect kitchen sink"
-            type="select"
-            v-model="selectedMultiple"
-            :options="options"
-            id="multiselect"
-            multiple
-            chips
-            allowAdd
-            searchable
-            clearButton
-            description="This multiselect field has search enabled, allowing adding custom options, and selected values are displayed as 'chips'"
-            tooltip="Test tooltip"
-        />
-        <FormInput
-            label="Radio"
-            type="radio"
-            v-model="selected"
-            :options="options"
-            id="radio"
-        />
-        <FormInput
-            label="checkbox"
-            type="checkbox"
-            v-model="checked"
-            :options="options"
-            id="checkbox"
-        />
-        <FormInput
-            label="Multiple checkboxes as switches"
-            type="checkbox"
-            v-model="selectedMultiple"
-            :options="options"
-            id="switch-group"
-            multiple
-            switch
-        />
-        <FormInput
-            label="Text input"
-            type="text"
-            v-model="text"
-            id="text"
-        />
-        <FormInput
-            label="Textarea"
-            type="textarea"
-            v-model="text"
-            id="textarea"
-            resize="none"
-        />
-        <FormInput
-            label="Date input"
-            type="date"
-            v-model="date"
-            id="date"
-        />
-    </MainComponent>
-    <FooterComponent />
+    <div class="min-h-dvh">
+        <IDCHeader baseUrl="https://metadata.idnau.org" />
+        <IDCPageHeader image="https://fastly.picsum.photos/id/1084/1200/800.jpg?hmac=KvJYDhjkHZmZ1Azd89hjuQnNkhukc9zO4WEDpM4I0Mg">
+            <template #title>
+                Title
+            </template>
+            <template #description>
+                Understand the foundational principles guiding the Indigenous Data Network, including Indigenous Data Sovereignty and responsible data governance practices.
+            </template>
+        </IDCPageHeader>
+        <div class="max-w-[1200px] mx-auto p-2">
+            <h1>
+                Title h1
+            </h1>
+            <h2>
+                Subtitle h2
+            </h2>
+            <h3>
+                Subtitle h3
+            </h3>
+            <h4>
+                Subtitle h4
+            </h4>
+            <h5>
+                Subtitle h5
+            </h5>
+            <h6>
+                Subtitle h6
+            </h6>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+            <a href="">Link</a>
+            <IDCSeparator />
+            <div class="grid grid-cols-4">
+                <div class="grid grid-cols-2">
+                    <div class="bg-isu-red text-isu-red-foreground">
+                        red
+                    </div>
+                    <div class="dark bg-isu-red text-isu-red-foreground">
+                        dark
+                    </div>
+                </div>
+                <div class="grid grid-cols-2">
+                    <div class="bg-isu-yellow text-isu-yellow-foreground">
+                        yellow
+                    </div>
+                    <div class="dark bg-isu-yellow text-isu-yellow-foreground">
+                        dark
+                    </div>
+                </div>
+                <div class="grid grid-cols-2">
+                    <div class="bg-isu-green text-isu-green-foreground">
+                        green
+                    </div>
+                    <div class="dark bg-isu-green text-isu-green-foreground">
+                        dark
+                    </div>
+                </div>
+                <div class="grid grid-cols-2">
+                    <div class="bg-isu-blue text-isu-blue-foreground">
+                        blue (primary)
+                    </div>
+                    <div class="dark bg-isu-blue text-isu-blue-foreground">
+                        dark
+                    </div>
+                </div>
+                <div class="grid grid-cols-2">
+                    <div class="bg-tan-100 text-tan-100-foreground">
+                        tan (100%)
+                    </div>
+                    <div class="dark bg-tan-100 text-tan-100-foreground">
+                        dark
+                    </div>
+                </div>
+                <div class="grid grid-cols-2">
+                    <div class="bg-tan-75 text-tan-75-foreground">
+                        tan (75%)
+                    </div>
+                    <div class="dark bg-tan-75 text-tan-75-foreground">
+                        dark
+                    </div>
+                </div>
+                <div class="grid grid-cols-2">
+                    <div class="bg-tan-50 text-tan-50-foreground">
+                        tan (50%)
+                    </div>
+                    <div class="dark bg-tan-50 text-tan-50-foreground">
+                        dark
+                    </div>
+                </div>
+                <div class="grid grid-cols-2">
+                    <div class="bg-tan-25 text-tan-25-foreground">
+                        blue (25%, background)
+                    </div>
+                    <div class="dark bg-tan-25 text-tan-25-foreground">
+                        dark
+                    </div>
+                </div>
+                <div class="grid grid-cols-2">
+                    <div class="bg-isu-black text-isu-black-foreground">
+                        blue (background)
+                    </div>
+                    <div class="dark bg-isu-black text-isu-black-foreground">
+                        dark
+                    </div>
+                </div>
+            </div>
+            <IDCSeparator />
+            <div class="grid grid-cols-4 max-w-[600px]">
+                <template v-for="colour in ['primary', 'secondary', 'destructive', 'red', 'yellow', 'green', 'blue', 'black', 'tan']">
+                    <template v-for="variant in ['solid', 'outline']">
+                        <IDCButton :colour="colour" :variant="variant">
+                            {{ colour }}
+                            {{ variant }}
+                        </IDCButton>
+                    </template>
+                </template>
+                <template v-for="size in ['xs', 'sm', 'md', 'lg']">
+                    <template v-for="icon in [false, true]">
+                        <IDCButton :size="size" :icon="icon">
+                            <Menu v-if="icon" />
+                            <template v-else>
+                                {{ size }}
+                            </template>
+                        </IDCButton>
+                    </template>
+                </template>
+            </div>
+        </div>
+        <Acknowledgement />
+        <ARDCFooter />
+        <IDCFooter />
+        <ScrollToTopButton />
+    </div>
 </template>
-
-<style lang="scss" scoped>
-
-</style>
