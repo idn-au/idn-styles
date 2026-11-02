@@ -25,6 +25,7 @@ jobs:
         with:
           node-version: 24
           cache: 'pnpm'
+          cache-dependency-path: idn-lib/pnpm-lock.yaml
           registry-url: 'https://npm.pkg.github.com'
       - name: Install dependencies
         working-directory: idn-lib
