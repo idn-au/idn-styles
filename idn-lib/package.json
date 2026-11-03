@@ -1,7 +1,7 @@
 {
     "name": "@idn-au/idn-lib",
     "type": "module",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "A Vue.js component library for shared IDN components",
     "license": "BSD-3-Clause",
     "homepage": "https://github.com/idn-au/idn-styles/blob/main/README.md",

@@ -68,13 +68,16 @@ const socials: {
                         </div>
                     </div>
                 </div>
-                <div class="flex flex-col gap-8">
-                    <div class="grid grid-cols-[3fr_min-content_2fr] items-center gap-8">
-                        <IDCLink to="/" :external="props.external">
+                <div class="flex flex-col gap-8 max-w-2xl">
+                    <div class="grid sm:grid-cols-[3fr_min-content_2fr] items-center gap-4 sm:gap-8">
+                        <IDCLink to="/" :external="props.external" class="max-sm:max-w-[280px]">
                             <img src="https://static.idnau.org/logos/idc/UoM_Indig.Data.Com_Brand_Art_RGB_Logo_White.png">
                         </IDCLink>
-                        <Separator orientation="vertical" class="!h-3/4 bg-muted-foreground" />
-                        <a href="https://mspgh.unimelb.edu.au/centres-institutes/onemda/research-group/indigenous-studies-unit/indigenous-data-network">
+                        <Separator orientation="vertical" class="!h-3/4 bg-muted-foreground max-sm:hidden" />
+                        <div class="sm:hidden text-sm text-muted-foreground">
+                            An outcome of the Indigenous Data Network
+                        </div>
+                        <a href="https://mspgh.unimelb.edu.au/centres-institutes/onemda/research-group/indigenous-studies-unit/indigenous-data-network" class="max-sm:max-w-[180px]">
                             <img src="https://static.idnau.org/logos/idn/UoM_Indig_Studies_Unit_Brand_ART - (ICON LOCK UP) IDN - WHITE.png">
                         </a>
                     </div>
@@ -102,13 +105,48 @@ const socials: {
 </template>
 
 <style scoped>
+/* default, xs */
 footer {
     background:
-        linear-gradient(var(--secondary), transparent),
+        linear-gradient(110deg, var(--secondary) 50%, color-mix(in oklab, var(--secondary) 50%, transparent)),
         url("https://static.idnau.org/graphics/network/IDC_Network graphic_White_ART-2.svg"), var(--secondary);
-    /* background-image: url("https://static.idnau.org/graphics/network/IDC_Network graphic_White_ART-2.svg"); */
     background-repeat: no-repeat;
-    background-size: 40%;
-    background-position: 102% 175%;
+    background-position: bottom;
+    background-size: 300%;
+}
+
+/* sm */
+@media (width >= 40rem /* 640px */) {
+    footer {
+        background:
+            linear-gradient(135deg, var(--secondary) 40%, color-mix(in oklab, var(--secondary) 50%, transparent)),
+            url("https://static.idnau.org/graphics/network/IDC_Network graphic_White_ART-2.svg"), var(--secondary);
+        background-repeat: no-repeat;
+        background-position: right -100px bottom -50px;
+        background-size: 150%;
+    }
+}
+
+/* md */
+@media (width >= 48rem /* 768px */) {
+    footer {
+        background:
+            linear-gradient(135deg, var(--secondary) 30%, color-mix(in oklab, var(--secondary) 50%, transparent)),
+            url("https://static.idnau.org/graphics/network/IDC_Network graphic_White_ART-2.svg"), var(--secondary);
+        background-repeat: no-repeat;
+        background-position: right -60px bottom -50px;
+    }
+}
+
+/* lg */
+@media (width >= 64rem /* 1024px */) {
+    footer {
+        background:
+            linear-gradient(170deg, var(--secondary) 20%, color-mix(in oklab, var(--secondary) 50%, transparent)),
+            url("https://static.idnau.org/graphics/network/IDC_Network graphic_White_ART-2.svg"), var(--secondary);
+        background-repeat: no-repeat;
+        background-position: right -40px bottom 0px;
+        background-size: 60%;
+    }
 }
 </style>

@@ -11,7 +11,7 @@ import ScrollToTopButton from "../components/ScrollToTopButton.vue";
 </script>
 
 <template>
-    <div class="min-h-dvh">
+    <div class="min-h-dvh m-0">
         <IDCHeader baseUrl="https://metadata.idnau.org" />
         <IDCPageHeader image="https://fastly.picsum.photos/id/1084/1200/800.jpg?hmac=KvJYDhjkHZmZ1Azd89hjuQnNkhukc9zO4WEDpM4I0Mg">
             <template #title>

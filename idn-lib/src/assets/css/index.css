@@ -209,7 +209,7 @@
 body {
     font-family: "Open Sans", sans-serif;
     background:
-        linear-gradient(var(--background), transparent),
+        linear-gradient(var(--background), color-mix(in oklab, var(--background) 40%, transparent)),
         url("https://static.idnau.org/graphics/pattern/IDC_Pattern_White_ART-2.svg"), var(--background);
 }
 
